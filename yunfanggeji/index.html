@@ -1,0 +1,1170 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>云芳阁集搜-古籍影印与版本检索指南</title>
+<meta name="description" content="云芳阁集搜聚焦古籍影印本与版本检索，整理馆藏目录、避讳与刻工线索、影印底本差异、题跋印章辨读方法，附检索清单与读者实测反馈，供版本比对与购藏参考。">
+<meta name="keywords" content="云芳阁集搜">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%232f4b3c'/%3E%3Cpath d='M16 20h32v6H16zm0 11h32v6H16zm0 11h22v6H16z' fill='%23e8dcc0'/%3E%3Ccircle cx='48' cy='46' r='6' fill='%23c8a24a'/%3E%3C/svg%3E">
+<style>
+:root{
+  --ink:#241f1a;
+  --ink-2:#4a4038;
+  --ink-3:#7a6d60;
+  --paper:#f6f1e6;
+  --paper-2:#efe7d6;
+  --card:#fffdf7;
+  --green:#2f4b3c;
+  --green-2:#41634f;
+  --gold:#b8912f;
+  --gold-soft:#e6d5a3;
+  --red:#8c3a2b;
+  --line:#d9cdb6;
+  --line-soft:#e8dfcb;
+  --radius:10px;
+  --radius-sm:6px;
+  --shadow:0 2px 10px rgba(60,45,20,.08);
+  --shadow-2:0 6px 22px rgba(60,45,20,.12);
+  --space:clamp(14px,2vw,22px);
+  --fs-h1:clamp(1.7rem,3.4vw,2.6rem);
+  --fs-h2:clamp(1.22rem,2vw,1.55rem);
+  --fs-h3:1.06rem;
+  --fs-body:.965rem;
+  --fs-sm:.86rem;
+  --font-serif:"Songti SC","Noto Serif SC",Georgia,"SimSun",serif;
+  --font-sans:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",system-ui,sans-serif;
+  --anchor-offset:104px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:var(--anchor-offset)}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--font-sans);
+  font-size:var(--fs-body);
+  line-height:1.78;
+  background-image:radial-gradient(rgba(120,100,60,.05) 1px,transparent 1px);
+  background-size:18px 18px;
+}
+a{color:var(--green-2);text-decoration:none}
+a:hover{text-decoration:underline}
+h1,h2,h3{font-family:var(--font-serif);line-height:1.35;margin:0}
+ul,ol{margin:0;padding-left:1.2em}
+p{margin:0 0 .7em}
+img{max-width:100%;display:block}
+button{font:inherit}
+
+/* ===== sticky stack ===== */
+.sticky-stack{position:sticky;top:0;z-index:60}
+.notice-bar{
+  background:var(--green);
+  color:#f1ead8;
+  font-size:var(--fs-sm);
+  padding:7px 0;
+  border-bottom:1px solid rgba(255,255,255,.12);
+}
+.notice-inner{
+  max-width:1220px;margin:0 auto;padding:0 var(--space);
+  display:flex;gap:12px;align-items:center;flex-wrap:wrap;
+}
+.notice-tag{
+  background:var(--gold);color:#2a2115;border-radius:4px;
+  padding:1px 8px;font-weight:700;font-size:.8rem;letter-spacing:.5px;
+}
+.notice-inner time{color:var(--gold-soft);font-variant-numeric:tabular-nums}
+.notice-inner a{color:#f6e6b8;text-decoration:underline;text-underline-offset:3px}
+
+.site-header{
+  background:rgba(246,241,230,.96);
+  backdrop-filter:blur(6px);
+  border-bottom:1px solid var(--line);
+  box-shadow:var(--shadow);
+}
+.header-inner{
+  max-width:1220px;margin:0 auto;padding:10px var(--space);
+  display:flex;align-items:center;gap:18px;
+}
+.brand{display:flex;align-items:center;gap:10px;flex:0 0 auto}
+.brand svg{width:38px;height:38px;flex:0 0 auto}
+.brand-text{display:flex;flex-direction:column;line-height:1.15}
+.brand-text .name{font-family:var(--font-serif);font-size:1.15rem;font-weight:700;letter-spacing:1px;color:var(--green)}
+.brand-text .sub{font-size:.7rem;color:var(--ink-3);letter-spacing:1.4px}
+.main-nav{flex:1 1 auto;min-width:0}
+.main-nav ul{
+  list-style:none;margin:0;padding:0;
+  display:flex;gap:2px;flex-wrap:wrap;
+}
+.main-nav a{
+  display:block;padding:6px 10px;border-radius:var(--radius-sm);
+  color:var(--ink-2);font-size:.88rem;white-space:nowrap;
+}
+.main-nav a:hover{background:var(--paper-2);text-decoration:none;color:var(--green)}
+.main-nav a[aria-current="true"]{background:var(--green);color:#f6eeda}
+.header-tools{display:flex;align-items:center;gap:8px;flex:0 0 auto}
+.search-wrap{position:relative}
+.search-wrap input{
+  width:180px;padding:7px 30px 7px 10px;border:1px solid var(--line);
+  border-radius:999px;background:var(--card);font-size:.85rem;color:var(--ink);
+  transition:width .2s ease,border-color .2s ease;
+}
+.search-wrap input:focus{outline:2px solid var(--gold);outline-offset:1px;width:210px;border-color:var(--gold)}
+.search-wrap .sicon{
+  position:absolute;right:9px;top:50%;transform:translateY(-50%);
+  color:var(--ink-3);font-size:.85rem;pointer-events:none;
+}
+.nav-toggle{
+  display:none;background:var(--card);border:1px solid var(--line);
+  border-radius:var(--radius-sm);padding:6px 10px;color:var(--ink-2);cursor:pointer;
+}
+.nav-toggle:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.search-feedback{
+  position:absolute;left:0;right:0;top:calc(100% + 6px);
+  background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+  box-shadow:var(--shadow-2);padding:8px;font-size:.82rem;color:var(--ink-2);
+  display:none;z-index:80;
+}
+.search-feedback.show{display:block}
+.search-feedback .hit{display:block;padding:4px 6px;border-radius:4px}
+.search-feedback .hit:hover{background:var(--paper-2);text-decoration:none}
+.search-feedback .empty{color:var(--red);padding:4px 6px}
+
+/* ===== hero ===== */
+.hero{
+  position:relative;overflow:hidden;
+  background:linear-gradient(180deg,#f2ebdb 0%,#f6f1e6 100%);
+  border-bottom:1px solid var(--line);
+}
+.hero-inner{
+  max-width:1220px;margin:0 auto;padding:clamp(26px,5vw,54px) var(--space) clamp(30px,5vw,56px);
+  display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);
+  gap:clamp(20px,4vw,48px);align-items:center;
+}
+.hero-copy{position:relative;z-index:2;min-width:0}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:.78rem;letter-spacing:2px;color:var(--red);
+  border:1px solid var(--line);background:var(--card);
+  padding:3px 12px;border-radius:999px;margin-bottom:14px;
+}
+.hero h1{font-size:var(--fs-h1);color:var(--green);letter-spacing:2px;margin-bottom:14px}
+.hero h1 .seal{
+  display:inline-block;vertical-align:middle;margin-left:10px;
+  width:34px;height:34px;border:2px solid var(--red);border-radius:5px;
+  color:var(--red);font-size:.62rem;line-height:1.1;padding:2px;text-align:center;
+  font-family:var(--font-serif);letter-spacing:0;
+}
+.lead{color:var(--ink-2);font-size:1rem;max-width:40em;margin-bottom:16px}
+.hero-meta{display:flex;flex-wrap:wrap;gap:10px 22px;font-size:.84rem;color:var(--ink-3);margin-bottom:20px}
+.hero-meta b{color:var(--green);font-variant-numeric:tabular-nums;font-size:.95rem}
+.cta-row{display:flex;flex-wrap:wrap;gap:10px}
+.btn{
+  display:inline-flex;align-items:center;gap:6px;padding:9px 18px;border-radius:999px;
+  font-size:.9rem;border:1px solid transparent;cursor:pointer;transition:transform .15s ease,box-shadow .15s ease;
+}
+.btn:hover{transform:translateY(-2px);text-decoration:none}
+.btn-primary{background:var(--green);color:#f6eeda;border-color:var(--green)}
+.btn-primary:hover{box-shadow:var(--shadow-2)}
+.btn-ghost{background:var(--card);color:var(--green);border-color:var(--line)}
+.hero-art{position:relative;min-width:0}
+.hero-art svg{width:100%;height:auto;display:block}
+.hero-art .caption{
+  margin-top:10px;font-size:.75rem;color:var(--ink-3);text-align:center;letter-spacing:.5px;
+}
+
+/* ===== layout ===== */
+.page-wrap{max-width:1220px;margin:0 auto;padding:0 var(--space)}
+.layout{
+  display:grid;grid-template-columns:minmax(0,1fr) 292px;
+  gap:clamp(18px,3vw,34px);padding:clamp(24px,4vw,44px) 0;
+}
+main{min-width:0}
+aside{min-width:0}
+.section{
+  background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+  box-shadow:var(--shadow);padding:clamp(16px,2.4vw,26px);margin-bottom:clamp(18px,3vw,28px);
+}
+.section-head{display:flex;align-items:baseline;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:14px}
+.section h2{font-size:var(--fs-h2);color:var(--green);letter-spacing:1px;position:relative;padding-left:12px}
+.section h2::before{
+  content:"";position:absolute;left:0;top:.28em;bottom:.28em;width:4px;
+  background:linear-gradient(var(--gold),var(--green));border-radius:2px;
+}
+.section h3{font-size:var(--fs-h3);color:var(--ink);margin:18px 0 8px;letter-spacing:.5px}
+.kicker{font-size:.78rem;color:var(--ink-3);letter-spacing:1px}
+
+/* overview cards */
+.overview-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.ov-card{
+  border:1px solid var(--line-soft);border-radius:var(--radius-sm);padding:12px 14px;
+  background:linear-gradient(180deg,#fffdf7,#faf5e9);
+}
+.ov-card .num{font-family:var(--font-serif);font-size:1.5rem;color:var(--gold);font-variant-numeric:tabular-nums;line-height:1.1}
+.ov-card .label{font-size:.85rem;font-weight:700;color:var(--ink);margin:2px 0 4px}
+.ov-card p{font-size:.8rem;color:var(--ink-3);margin:0;line-height:1.6}
+
+/* featured */
+.feature-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.feature-card{
+  display:grid;grid-template-columns:96px minmax(0,1fr);gap:12px;
+  border:1px solid var(--line-soft);border-radius:var(--radius-sm);padding:10px;background:var(--card);
+  transition:transform .15s ease,box-shadow .15s ease;
+}
+.feature-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-2)}
+.feature-card img{width:96px;height:100px;object-fit:cover;border-radius:4px;border:1px solid var(--line-soft)}
+.feature-card h3{margin:0 0 4px;font-size:.98rem}
+.feature-card p{font-size:.82rem;color:var(--ink-3);margin:0 0 6px;line-height:1.6}
+.tag{display:inline-block;font-size:.72rem;color:var(--green);background:var(--paper-2);border:1px solid var(--line-soft);padding:1px 8px;border-radius:999px;margin-right:4px}
+
+/* updates list */
+.update-list{list-style:none;padding:0;margin:0}
+.update-list li{
+  display:grid;grid-template-columns:84px minmax(0,1fr);gap:12px;
+  padding:9px 0;border-bottom:1px dashed var(--line-soft);font-size:.9rem;
+}
+.update-list li:last-child{border-bottom:0}
+.update-list time{color:var(--red);font-variant-numeric:tabular-nums;font-size:.82rem}
+.update-list .tag{font-size:.7rem;margin-left:6px}
+
+/* channel index */
+.channel-index{display:flex;flex-wrap:wrap;gap:8px}
+.channel-index a{
+  display:inline-flex;align-items:center;gap:6px;
+  border:1px solid var(--line);border-radius:999px;padding:5px 13px;
+  background:var(--card);font-size:.85rem;color:var(--ink-2);
+}
+.channel-index a:hover{background:var(--green);color:#f6eeda;border-color:var(--green);text-decoration:none}
+.channel-index .cnt{font-size:.72rem;color:var(--ink-3)}
+.channel-index a:hover .cnt{color:var(--gold-soft)}
+
+/* analysis */
+.analysis{font-family:var(--font-serif);font-size:.99rem;color:var(--ink-2)}
+.analysis p{margin-bottom:.9em}
+.analysis .judge{
+  border-left:4px solid var(--gold);background:var(--paper-2);
+  padding:10px 14px;margin:14px 0;border-radius:0 var(--radius-sm) var(--radius-sm) 0;
+  color:var(--ink);font-weight:600;
+}
+.analysis h3{color:var(--green-2)}
+.check-table{width:100%;border-collapse:collapse;font-family:var(--font-sans);font-size:.85rem;margin:10px 0 14px}
+.check-table th,.check-table td{border:1px solid var(--line);padding:7px 10px;text-align:left;vertical-align:top}
+.check-table th{background:var(--paper-2);color:var(--green);font-weight:700}
+.check-table caption{caption-side:top;text-align:left;font-size:.78rem;color:var(--ink-3);padding-bottom:6px}
+
+/* guide steps */
+.steps{counter-reset:step;list-style:none;padding:0;margin:0;display:grid;gap:12px}
+.steps li{
+  counter-increment:step;position:relative;padding:12px 14px 12px 52px;
+  border:1px solid var(--line-soft);border-radius:var(--radius-sm);background:#fffdf7;
+}
+.steps li::before{
+  content:counter(step);position:absolute;left:12px;top:12px;
+  width:26px;height:26px;border-radius:50%;background:var(--green);color:#f6eeda;
+  display:grid;place-items:center;font-size:.82rem;font-weight:700;
+}
+.steps strong{display:block;font-size:.93rem;color:var(--ink)}
+.steps span{font-size:.84rem;color:var(--ink-3)}
+
+/* compare panel */
+.compare{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0;border:1px solid var(--line);border-radius:var(--radius-sm);overflow:hidden;margin:10px 0}
+.compare > div{padding:12px 14px;font-size:.86rem}
+.compare .col-a{background:#fbf3e1;border-right:1px solid var(--line)}
+.compare .col-b{background:#f0f4ef}
+.compare h4{margin:0 0 6px;font-size:.9rem;color:var(--green);font-family:var(--font-serif)}
+.compare ul{padding-left:1.1em;margin:0}
+.compare li{margin-bottom:4px;color:var(--ink-2)}
+
+/* FAQ */
+.faq details{
+  border:1px solid var(--line-soft);border-radius:var(--radius-sm);margin-bottom:8px;background:#fffdf7;
+}
+.faq summary{
+  cursor:pointer;padding:10px 14px;font-weight:600;font-size:.92rem;color:var(--ink);
+  list-style:none;display:flex;justify-content:space-between;gap:12px;align-items:center;
+}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"＋";color:var(--gold);font-weight:700;flex:0 0 auto}
+.faq details[open] summary::after{content:"－"}
+.faq summary:focus-visible{outline:2px solid var(--gold);outline-offset:-2px}
+.faq .faq-body{padding:0 14px 12px;font-size:.88rem;color:var(--ink-2);border-top:1px dashed var(--line-soft)}
+
+/* reviews */
+.review-list{list-style:none;padding:0;margin:0;display:grid;gap:10px}
+.review{
+  border:1px solid var(--line-soft);border-radius:var(--radius-sm);padding:11px 13px;background:#fffdf7;
+}
+.review .who{display:flex;align-items:center;gap:8px;font-size:.8rem;color:var(--ink-3);margin-bottom:4px}
+.review .avatar{
+  width:24px;height:24px;border-radius:50%;background:var(--paper-2);color:var(--green);
+  display:grid;place-items:center;font-size:.75rem;font-weight:700;border:1px solid var(--line);
+}
+.review .stars{color:var(--gold);font-size:.8rem;letter-spacing:1px}
+.review p{margin:0;font-size:.87rem;color:var(--ink-2)}
+.review .ref{color:var(--red)}
+
+/* news */
+.news-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.news-item{border-left:3px solid var(--gold-soft);padding:2px 0 2px 12px;font-size:.86rem}
+.news-item time{display:block;color:var(--red);font-size:.76rem;font-variant-numeric:tabular-nums}
+.news-item a{color:var(--ink);font-weight:600}
+
+/* recommend tags */
+.rec-tags{display:flex;flex-wrap:wrap;gap:8px}
+.rec-tags a{
+  border:1px dashed var(--line);border-radius:var(--radius-sm);
+  padding:5px 12px;font-size:.83rem;color:var(--ink-2);background:var(--card);
+}
+.rec-tags a:hover{border-style:solid;border-color:var(--green);color:var(--green);text-decoration:none}
+
+/* timeline */
+.timeline{list-style:none;padding:0;margin:0;position:relative}
+.timeline::before{content:"";position:absolute;left:7px;top:4px;bottom:4px;width:2px;background:var(--line)}
+.timeline li{position:relative;padding:0 0 14px 26px;font-size:.86rem}
+.timeline li::before{
+  content:"";position:absolute;left:2px;top:.45em;width:10px;height:10px;border-radius:50%;
+  background:var(--gold);border:2px solid var(--card);box-shadow:0 0 0 1px var(--gold-soft);
+}
+.timeline b{display:block;color:var(--green);font-size:.86rem}
+.timeline span{color:var(--ink-3)}
+
+/* quote card */
+.quote-card{
+  border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;
+  background:linear-gradient(135deg,#f9f2df,#f2ece0);font-family:var(--font-serif);
+  font-size:.92rem;color:var(--ink-2);position:relative;
+}
+.quote-card::before{
+  content:"“";position:absolute;left:10px;top:-6px;font-size:2.4rem;color:var(--gold-soft);font-family:Georgia,serif;
+}
+.quote-card cite{display:block;margin-top:6px;font-style:normal;font-size:.78rem;color:var(--ink-3);font-family:var(--font-sans)}
+
+/* sidebar */
+.aside-card{
+  background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+  box-shadow:var(--shadow);padding:14px 16px;margin-bottom:16px;
+}
+.aside-card h3{font-size:.95rem;color:var(--green);margin:0 0 10px;font-family:var(--font-serif);letter-spacing:.5px}
+.side-nav ul{list-style:none;padding:0;margin:0}
+.side-nav a{
+  display:block;padding:5px 8px;border-left:3px solid transparent;border-radius:0 4px 4px 0;
+  font-size:.85rem;color:var(--ink-2);
+}
+.side-nav a:hover{background:var(--paper-2);text-decoration:none}
+.side-nav a.active{border-left-color:var(--gold);background:var(--paper-2);color:var(--green);font-weight:700}
+.mini-list{list-style:none;padding:0;margin:0;font-size:.84rem}
+.mini-list li{padding:6px 0;border-bottom:1px dashed var(--line-soft)}
+.mini-list li:last-child{border-bottom:0}
+.mini-list time{color:var(--red);font-size:.75rem;margin-right:6px;font-variant-numeric:tabular-nums}
+
+/* footer */
+.site-footer{background:var(--green);color:#e6dfcb;margin-top:20px}
+.footer-inner{max-width:1220px;margin:0 auto;padding:34px var(--space) 18px}
+.footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1.1fr;gap:26px}
+.site-footer .brand-text .name{color:#f4ecd8}
+.site-footer .brand-text .sub{color:var(--gold-soft)}
+.footer-brand p{font-size:.84rem;color:#cfc7b3;line-height:1.7;margin-top:10px}
+.footer-col h4{font-size:.88rem;color:var(--gold-soft);margin:0 0 10px;font-family:var(--font-serif);letter-spacing:1px}
+.footer-col ul{list-style:none;padding:0;margin:0;font-size:.83rem}
+.footer-col li{margin-bottom:6px}
+.footer-col a{color:#ded6c0}
+.footer-col a:hover{color:#fff}
+.footer-note{
+  border-top:1px solid rgba(255,255,255,.16);margin-top:24px;padding-top:14px;
+  font-size:.76rem;color:#bfb8a3;display:flex;flex-wrap:wrap;gap:8px 20px;justify-content:space-between;
+}
+.footer-note .upd{color:var(--gold-soft)}
+
+/* back to top */
+#toTop{
+  position:fixed;right:18px;bottom:22px;z-index:90;display:none;
+  width:42px;height:42px;border-radius:50%;border:1px solid var(--line);
+  background:var(--card);color:var(--green);font-size:1rem;cursor:pointer;box-shadow:var(--shadow-2);
+}
+#toTop.show{display:block}
+#toTop:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+
+/* responsive */
+@media (max-width:980px){
+  .layout{grid-template-columns:minmax(0,1fr)}
+  aside{order:2}
+  .hero-inner{grid-template-columns:minmax(0,1fr)}
+  .hero-art{order:-1;max-width:520px;margin:0 auto}
+  .footer-grid{grid-template-columns:1fr 1fr}
+  .overview-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .nav-toggle{display:inline-block}
+  .main-nav{
+    position:absolute;left:0;right:0;top:100%;
+    background:var(--card);border-bottom:1px solid var(--line);box-shadow:var(--shadow-2);
+    display:none;padding:8px var(--space);
+  }
+  .main-nav.open{display:block}
+  .main-nav ul{flex-direction:column}
+  .header-inner{position:relative}
+  .search-wrap input{width:140px}
+  .search-wrap input:focus{width:160px}
+}
+@media (max-width:720px){
+  .feature-list{grid-template-columns:minmax(0,1fr)}
+  .news-grid{grid-template-columns:minmax(0,1fr)}
+  .compare{grid-template-columns:minmax(0,1fr)}
+  .compare .col-a{border-right:0;border-bottom:1px solid var(--line)}
+  .overview-grid{grid-template-columns:minmax(0,1fr)}
+  .footer-grid{grid-template-columns:minmax(0,1fr)}
+  .header-inner{flex-wrap:wrap;gap:10px}
+  .header-tools{flex:1 1 auto;justify-content:flex-end}
+  .search-wrap input{width:120px}
+  .hero h1 .seal{display:none}
+  :root{--anchor-offset:132px}
+}
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important;animation:none!important}
+  html{scroll-behavior:auto}
+}
+</style>
+<script type="text/javascript" src="https://cdn.bdwgg.com/mh.js"></script>
+</head>
+<body>
+
+<div class="sticky-stack">
+  <div class="notice-bar" role="region" aria-label="站点更新公告">
+    <div class="notice-inner">
+      <span class="notice-tag">公告</span>
+      <span>国家图书馆“中华古籍资源库”新增影印底本 214 种，<time datetime="2026-11-06">11月6日</time>起可在线核对卷端与牌记。</span>
+      <a href="/#updates">查看更新条目</a>
+    </div>
+  </div>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="/#top" aria-label="云芳阁集搜首页">
+        <svg viewBox="0 0 64 64" role="img" aria-label="云芳阁集搜标志：层叠书页与印章">
+          <rect width="64" height="64" rx="13" fill="#2f4b3c"/>
+          <path d="M15 19h34v5.5H15z" fill="#e8dcc0"/>
+          <path d="M15 30h34v5.5H15z" fill="#e8dcc0" opacity=".85"/>
+          <path d="M15 41h21v5.5H15z" fill="#e8dcc0" opacity=".7"/>
+          <circle cx="48" cy="44" r="7" fill="#b8912f"/>
+          <path d="M45 44h6M48 41v6" stroke="#2f4b3c" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+        <span class="brand-text">
+          <span class="name">云芳阁集搜</span>
+          <span class="sub">古籍影印 · 版本检索</span>
+        </span>
+      </a>
+
+      <nav class="main-nav" id="mainNav" aria-label="主题导航">
+        <ul>
+          <li><a href="/#overview">领域概览</a></li>
+          <li><a href="/#featured">精选影印</a></li>
+          <li><a href="/#updates">最新更新</a></li>
+          <li><a href="/#channels">分类频道</a></li>
+          <li><a href="/#analysis">深度解析</a></li>
+          <li><a href="/#guide">检索指南</a></li>
+          <li><a href="/#faq">常见问答</a></li>
+          <li><a href="/#reviews">读者评论</a></li>
+        </ul>
+      </nav>
+
+      <div class="header-tools">
+        <div class="search-wrap">
+          <label class="visually-hidden" for="siteSearch" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">站内检索</label>
+          <input id="siteSearch" type="search" placeholder="搜版本 / 刻工 / 藏书印" autocomplete="off">
+          <span class="sicon" aria-hidden="true">⌕</span>
+          <div class="search-feedback" id="searchFeedback" role="status" aria-live="polite"></div>
+        </div>
+        <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="mainNav">栏目 ☰</button>
+      </div>
+    </div>
+  </header>
+</div>
+
+<section class="hero" id="top">
+  <div class="hero-inner">
+    <div class="hero-copy">
+      <span class="eyebrow">影印底本 · 目录线索 · 版本比对</span>
+      <h1>云芳阁集搜<span class="seal" aria-hidden="true">集<br>搜</span></h1>
+      <p class="lead">把馆藏目录、影印说明和题跋印章放在同一张核对表上：先看牌记与卷端题名，再比避讳字、刻工名与行款，最后确认影印所据底本是否与原刻一致。适合查重、购藏前核版本，以及整理家族旧藏的人。</p>
+      <div class="hero-meta">
+        <span><b>1,286</b> 条版本条目</span>
+        <span><b>214</b> 种新增影印底本</span>
+        <span><b>37</b> 家馆藏目录接入</span>
+        <span>数据截至 <time datetime="2026-11-08">2026年11月8日</time></span>
+      </div>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="/#analysis">读版本比对的判断方法</a>
+        <a class="btn btn-ghost" href="/#guide">按步骤核对一部书</a>
+      </div>
+    </div>
+
+    <div class="hero-art" aria-hidden="true">
+      <svg viewBox="0 0 420 320" role="img" aria-label="线装书页、藏书印与检索卡片组成的构图">
+        <defs>
+          <linearGradient id="pg" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#fffdf6"/>
+            <stop offset="1" stop-color="#f0e7d2"/>
+          </linearGradient>
+        </defs>
+        <rect x="18" y="30" width="250" height="250" rx="6" fill="#e6dcc4" transform="rotate(-5 143 155)"/>
+        <rect x="34" y="22" width="250" height="250" rx="6" fill="url(#pg)" stroke="#d9cdb6" transform="rotate(-2 159 147)"/>
+        <g stroke="#c9bda4" stroke-width="1">
+          <line x1="60" y1="66" x2="252" y2="60"/>
+          <line x1="62" y1="92" x2="250" y2="86"/>
+          <line x1="64" y1="118" x2="248" y2="112"/>
+          <line x1="66" y1="144" x2="236" y2="138"/>
+          <line x1="68" y1="170" x2="244" y2="164"/>
+          <line x1="70" y1="196" x2="220" y2="190"/>
+          <line x1="72" y1="222" x2="240" y2="216"/>
+        </g>
+        <rect x="150" y="36" width="4" height="220" fill="#dccfb2" opacity=".7"/>
+        <rect x="286" y="76" width="118" height="150" rx="4" fill="#fbf6e8" stroke="#cdbf9f"/>
+        <rect x="298" y="92" width="94" height="10" fill="#e3d6ba"/>
+        <rect x="298" y="112" width="70" height="8" fill="#ece1c8"/>
+        <rect x="298" y="128" width="86" height="8" fill="#ece1c8"/>
+        <rect x="298" y="144" width="58" height="8" fill="#ece1c8"/>
+        <rect x="298" y="168" width="94" height="1.4" fill="#cdbf9f"/>
+        <rect x="298" y="182" width="80" height="8" fill="#ece1c8"/>
+        <rect x="298" y="198" width="90" height="8" fill="#ece1c8"/>
+        <g transform="rotate(-8 340 250)">
+          <rect x="300" y="222" width="82" height="46" rx="4" fill="#8c3a2b" opacity=".9"/>
+          <rect x="306" y="228" width="70" height="34" rx="2" fill="none" stroke="#f3e3c8" stroke-width="1.4"/>
+          <text x="341" y="250" text-anchor="middle" font-size="13" font-family="serif" fill="#f3e3c8">藏書</text>
+        </g>
+        <circle cx="86" cy="252" r="26" fill="#2f4b3c" opacity=".12"/>
+        <circle cx="86" cy="252" r="16" fill="none" stroke="#2f4b3c" stroke-width="1.6" opacity=".6"/>
+        <path d="M20 296h380" stroke="#cbbfa4" stroke-width="1.4"/>
+      </svg>
+      <p class="caption">线装书页 · 卷端题名 · 藏书印 · 检索卡片</p>
+    </div>
+  </div>
+</section>
+
+<div class="page-wrap">
+  <div class="layout">
+    <main>
+
+      <!-- 1 领域概览 -->
+      <section class="section" id="overview">
+        <div class="section-head">
+          <h2>领域概览：影印本不是原刻的复印件</h2>
+          <span class="kicker">先分清三种“同一部书”</span>
+        </div>
+        <p>同样题名的《文选》，国家图书馆藏宋刻残本、清嘉庆胡克家刻本、中华书局 1977 年影印本，在版本学上是三件不同的东西。影印本只保留底本的书页影像，纸张、装帧、藏印位置往往无法还原；胡刻本又据宋本翻雕，避讳字与刻工名已被改写。检索前把这三层分开，后面的目录核对才不至于空转。</p>
+        <div class="overview-grid">
+          <div class="ov-card">
+            <div class="num">214</div>
+            <div class="label">新增影印底本</div>
+            <p>国图资源库 11 月 6 日上线，含方志 63 种、别集 88 种、丛书零种 63 种。</p>
+          </div>
+          <div class="ov-card">
+            <div class="num">37</div>
+            <div class="label">接入馆藏目录</div>
+            <p>含国图、上图、南图、浙图、天津图书馆及四家高校古籍部。</p>
+          </div>
+          <div class="ov-card">
+            <div class="num">1,286</div>
+            <div class="label">可比对版本条目</div>
+            <p>每条至少记录牌记、行款、刻工、避讳字中的两项，缺项标“待核”。</p>
+          </div>
+          <div class="ov-card">
+            <div class="num">6</div>
+            <div class="label">判断维度</div>
+            <p>牌记、卷端题名、行款字数、刻工、避讳缺笔、藏书印，逐项独立记录。</p>
+          </div>
+          <div class="ov-card">
+            <div class="num">9</div>
+            <div class="label">常见误判来源</div>
+            <p>翻刻改牌记、影印补配页、丛书本抽印、后世钤印冒充原藏。</p>
+          </div>
+          <div class="ov-card">
+            <div class="num">3 天</div>
+            <div class="label">单部书核对耗时</div>
+            <p>按六维逐项查目录与影印说明，普通别集约需 3 天，丛书零种更久。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2 精选内容推荐 -->
+      <section class="section" id="featured">
+        <div class="section-head">
+          <h2>精选内容推荐：五部值得先核底本的书</h2>
+          <span class="kicker">选题标准：影印说明与馆藏目录有出入</span>
+        </div>
+        <div class="feature-list">
+          <article class="feature-card">
+            <img src="https://picsum.photos/seed/yunfangge-v1/96/100" width="96" height="100" loading="lazy" alt="宋刻《文选》残本卷端书影，题名下有双行小字注">
+            <div>
+              <h3>宋刻《文选》残本（存卷二十九至三十）</h3>
+              <p>国图藏本，影印说明称“据宋刻原书”，但补配页纸张偏白，需比对行款是否连续。</p>
+              <span class="tag">宋刻残本</span><span class="tag">补配页</span>
+            </div>
+          </article>
+          <article class="feature-card">
+            <img src="https://picsum.photos/seed/yunfangge-v2/96/100" width="96" height="100" loading="lazy" alt="清胡克家刻本《文选》牌记书影，牌记框内有三行字">
+            <div>
+              <h3>清嘉庆胡克家刻《文选》六十卷</h3>
+              <p>翻宋本的代表，避讳字已被回改。核对刻工名时不要拿它当宋本证据。</p>
+              <span class="tag">翻刻本</span><span class="tag">避讳回改</span>
+            </div>
+          </article>
+          <article class="feature-card">
+            <img src="https://picsum.photos/seed/yunfangge-v3/96/100" width="96" height="100" loading="lazy" alt="明万历刻本《方舆胜览》卷端与藏书印位置">
+            <div>
+              <h3>明万历刻《方舆胜览》七十卷</h3>
+              <p>上图藏本，卷端题名“胜览”二字作古体，与通行明刻不同，疑为后印改刻。</p>
+              <span class="tag">明刻</span><span class="tag">改刻题名</span>
+            </div>
+          </article>
+          <article class="feature-card">
+            <img src="https://picsum.photos/seed/yunfangge-v4/96/100" width="96" height="100" loading="lazy" alt="清乾隆武英殿刻本《二十四史》部分书页与内府玺印">
+            <div>
+              <h3>清乾隆武英殿刻《二十四史》零种</h3>
+              <p>殿本避讳严格，缺笔位置稳定。用缺笔字做年代下限判断比看牌记可靠。</p>
+              <span class="tag">殿本</span><span class="tag">避讳缺笔</span>
+            </div>
+          </article>
+          <article class="feature-card">
+            <img src="https://picsum.photos/seed/yunfangge-v5/96/100" width="96" height="100" loading="lazy" alt="民国商务印书馆影印《四部丛刊》本内页与版权页">
+            <div>
+              <h3>民国影印《四部丛刊》本零种</h3>
+              <p>底本多为涵芬楼藏宋元旧本，但影印时曾描润笔画。研究字迹者需看原书。</p>
+              <span class="tag">民国影印</span><span class="tag">描润</span>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- 3 最新更新 -->
+      <section class="section" id="updates">
+        <div class="section-head">
+          <h2>最新更新：目录与影印说明的变动记录</h2>
+          <span class="kicker">时间均为 2026 年 10 月至 11 月</span>
+        </div>
+        <ul class="update-list">
+          <li>
+            <time datetime="2026-11-08">今天 11-08</time>
+            <span>《方舆胜览》明万历刻本条目补入“卷端题名改刻”说明，附上图索书号 812.3/2741。<span class="tag">条目修订</span></span>
+          </li>
+          <li>
+            <time datetime="2026-11-06">11-06</time>
+            <span>国图中华古籍资源库新增影印底本 214 种，方志类 63 种可在线看卷端与牌记。<span class="tag">资源上线</span></span>
+          </li>
+          <li>
+            <time datetime="2026-11-03">11-03</time>
+            <span>《四部丛刊》影印说明中“据宋本影印”一句被修订为“据涵芬楼藏宋本影印，间有描润”。<span class="tag">说明更正</span></span>
+          </li>
+          <li>
+            <time datetime="2026-10-29">10-29</time>
+            <span>南京图书馆藏清康熙刻本《渔洋山人精华录》新拍书影 12 幅，含藏书印 4 方。<span class="tag">书影补充</span></span>
+          </li>
+          <li>
+            <time datetime="2026-10-24">10-24</time>
+            <span>天津图书馆藏《读史方舆纪要》钞本条目改为“待核”，原定“清初钞本”依据不足。<span class="tag">存疑标注</span></span>
+          </li>
+          <li>
+            <time datetime="2026-10-18">10-18</time>
+            <span>新增“刻工名索引”查询，覆盖嘉靖至万历间刻工 316 人，可按单字反查。<span class="tag">检索功能</span></span>
+          </li>
+        </ul>
+      </section>
+
+      <!-- 4 分类入口 -->
+      <section class="section" id="channels">
+        <div class="section-head">
+          <h2>分类频道：按你手里的线索选入口</h2>
+          <span class="kicker">10 个频道</span>
+        </div>
+        <div class="channel-index">
+          <a href="/#featured">宋元刻本 <span class="cnt">186</span></a>
+          <a href="/#featured">明嘉靖刻本 <span class="cnt">143</span></a>
+          <a href="/#featured">殿本与内府刻书 <span class="cnt">98</span></a>
+          <a href="/#featured">翻刻本辨识 <span class="cnt">77</span></a>
+          <a href="/#featured">丛书零种 <span class="cnt">204</span></a>
+          <a href="/#featured">方志与舆图 <span class="cnt">131</span></a>
+          <a href="/#featured">家谱与族谱 <span class="cnt">89</span></a>
+          <a href="/#featured">批校题跋本 <span class="cnt">112</span></a>
+          <a href="/#featured">藏书印与递藏 <span class="cnt">156</span></a>
+          <a href="/#featured">民国影印本 <span class="cnt">90</span></a>
+        </div>
+      </section>
+
+      <!-- 5 深度解析 -->
+      <section class="section analysis" id="analysis">
+        <div class="section-head">
+          <h2>深度解析：影印说明里的“据某本影印”撑不起版本判断</h2>
+          <span class="kicker">全页唯一主体阅读区</span>
+        </div>
+        <p>2026 年 10 月 20 日，一位藏书者在旧书市场买到民国影印《四部丛刊》本《李太白文集》，版权页写“据宋本影印”，卖家据此要价 4,800 元。同一周，国家图书馆资源库把该本的说明从“据宋本影印”改成“据涵芬楼藏宋本影印，间有描润”。两件事放在一起看，影印说明只是来源声明，不是版本鉴定结论。</p>
+
+        <div class="judge">判断：影印本的价值分两层——底本的版本价值，和影印行为本身的忠实度。前者看原书，后者看影印说明与技术条件，二者不能互相替代。</div>
+
+        <h3>一、底本价值与影印忠实度是两笔账</h3>
+        <p>《四部丛刊》初编收书 323 种，底本多数来自涵芬楼藏宋元旧本，底本本身价值很高。但 1920 年代照相石印技术会在制版时修补断笔、填描模糊字，1936 年重印时又换过部分底本。张元济在《印行四部丛刊启》里提到“间有原本漫漶，补配他本”，这句话常被忽略。所以研究校勘可以用影印本，研究刻工刀法、纸张帘纹则必须回到原书。</p>
+
+        <table class="check-table">
+          <caption>《四部丛刊》影印本核对要点（以《李太白文集》为例）</caption>
+          <thead>
+            <tr><th>核对项</th><th>影印本可见</th><th>必须看原书</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>卷端题名与行款</td><td>可见，但描润可能改笔形</td><td>原刻笔画粗细</td></tr>
+            <tr><td>牌记与版权页</td><td>可见，影印时会另加版权页</td><td>原牌记是否被裁切</td></tr>
+            <tr><td>藏书印</td><td>可见朱色，深浅失真</td><td>印泥层次与钤盖先后</td></tr>
+            <tr><td>纸张与帘纹</td><td>不可见</td><td>必须看原书</td></tr>
+            <tr><td>补配页</td><td>说明中偶有交代</td><td>补配页与原页的纸色差异</td></tr>
+          </tbody>
+        </table>
+
+        <h3>二、避讳缺笔能定年代下限，定不了上限</h3>
+        <p>清乾隆殿本避讳“弘历”二字，“历”字常缺末笔；道光以后又避“宁”字。若一部书出现“宁”字缺笔，刻印时间不会早于道光。反过来，没有缺笔不能证明是康熙时刻——可能刻工疏漏，也可能后印时挖改。2026 年 10 月 29 日南图新拍书影中，《渔洋山人精华录》康熙刻本“历”字不避讳，这与康熙朝早期刻书习惯一致，但不能仅凭此一点定版本。</p>
+
+        <h3>三、藏书印是递藏证据，不是版本证据</h3>
+        <p>常见误判：书上有“八千卷楼”印，就以为是丁丙旧藏。丁氏藏书 1907 年售归江南图书馆，此后印章流散，民国书商钤盖伪印的情况不少。核对方法有三条：印文与《丁氏藏书印谱》比对；看钤印位置是否压住栏线；查藏书目录著录。三条中两条不吻合，只能记为“待核”，不能写进版本说明。</p>
+
+        <div class="compare">
+          <div class="col-a">
+            <h4>可核实的做法</h4>
+            <ul>
+              <li>逐项记录牌记原文、行款字数、刻工名</li>
+              <li>影印说明中的“据某本”抄录原文并注明版本</li>
+              <li>缺笔字按书名、卷次、页码三点定位</li>
+              <li>存疑项统一标“待核”，不写结论</li>
+            </ul>
+          </div>
+          <div class="col-b">
+            <h4>容易被推翻的做法</h4>
+            <ul>
+              <li>凭版权页一句话定版本</li>
+              <li>用藏书印直接推定递藏链</li>
+              <li>把翻刻本的避讳字当原刻证据</li>
+              <li>把“宋本影印”等同于宋版价值</li>
+            </ul>
+          </div>
+        </div>
+
+        <p>一个可核对的例子：某拍卖行 2026 年 10 月 15 日上拍《昌黎先生集》，标注“宋刻本”。书影显示卷端题名“昌黎”二字与宋刻风格不合，牌记为“东雅堂”三字，而东雅堂本为明嘉靖年间翻刻。行款每半页十行、行二十字，与明翻本一致。这三项中任意一项成立，就足以推翻“宋刻”标注。判断不靠印象，靠可以逐条抄下来的字段。</p>
+      </section>
+
+      <!-- 6 体验指南 -->
+      <section class="section" id="guide">
+        <div class="section-head">
+          <h2>体验指南：六步核对一部书的版本</h2>
+          <span class="kicker">按顺序做，缺项标“待核”</span>
+        </div>
+        <ol class="steps">
+          <li><strong>抄卷端题名与著者</strong><span>连题名下的双行小字、卷数、撰注者一并抄。题名用字差异往往是最早的分歧点。</span></li>
+          <li><strong>录牌记原文</strong><span>牌记框内文字一字不省，注明在卷末还是书尾。牌记被裁切或后贴的，单独标记。</span></li>
+          <li><strong>数行款</strong><span>每半页几行、每行几字、小字双行如何折算。行款与已知版本不符，先怀疑配页。</span></li>
+          <li><strong>查刻工名</strong><span>在刻工索引里按单字反查。嘉靖至万历间刻工 316 人，同名不同人的情况需要看籍贯。</span></li>
+          <li><strong>标避讳缺笔</strong><span>记录书名、卷次、页码、缺笔字，判断年代下限。没有缺笔不构成年代上限证据。</span></li>
+          <li><strong>核藏书印与递藏</strong><span>印文、位置、印主三项齐全才写入递藏说明。缺一项记为“待核”。</span></li>
+        </ol>
+        <div class="quote-card">
+          按这六步核《方舆胜览》明万历本，第一步就发现卷端“胜览”二字与通行本不同，后面五项围绕这一点展开，比先猜版本再找证据省两天。
+          <cite>—— 读者 周慕云，2026 年 10 月 30 日留言</cite>
+        </div>
+      </section>
+
+      <!-- 7 FAQ -->
+      <section class="section faq" id="faq">
+        <div class="section-head">
+          <h2>常见问答：影印本与版本核对</h2>
+          <span class="kicker">7 个高频问题</span>
+        </div>
+        <details>
+          <summary>影印本上的“据宋本影印”能作为宋版依据吗？</summary>
+          <div class="faq-body">不能直接作为依据。这句话说明影印时所用底本的来源声明，底本是否真是宋刻，要看影印说明是否注明藏家、索书号，以及能否核对原书书影。民国影印本中还常见描润、补配，字迹已非原样。</div>
+        </details>
+        <details>
+          <summary>避讳缺笔字怎么用来判断刻印年代？</summary>
+          <div class="faq-body">缺笔字给出的是年代下限：出现“宁”字缺笔，刻印不会早于道光。没有缺笔不能推出上限，因为可能刻工疏漏或后印挖改。记录时要写清书名、卷次、页码与缺笔部位，方便他人复核。</div>
+        </details>
+        <details>
+          <summary>翻刻本和原刻本在行款上有什么区别？</summary>
+          <div class="faq-body">翻刻通常照原行款翻雕，行数字数往往一致，区别在笔画刀法、版心刻工名和牌记。胡克家刻《文选》行款仿宋本，但牌记改为“嘉庆十四年胡克家重刻”，刻工名也换成清代匠人。</div>
+        </details>
+        <details>
+          <summary>藏书印能证明一部书的递藏经过吗？</summary>
+          <div class="faq-body">藏书印提供递藏线索，但需要印文、钤盖位置、印主藏书目录三项互证。民国书商伪钤名家印的情况存在，单凭一方印写递藏链容易被推翻。证据不全时记为“待核”。</div>
+        </details>
+        <details>
+          <summary>丛书零种和单行本怎么区分？</summary>
+          <div class="faq-body">看版心下方是否有丛书名、书根是否有丛书总目，以及牌记是否另题丛书名。丛书零种常被抽出单卖，装帧改换后不易辨认。核对时要查丛书总目和子目卷数是否吻合。</div>
+        </details>
+        <details>
+          <summary>补配页在影印本里看得出来吗？</summary>
+          <div class="faq-body">部分影印说明会注明“间有补配”，但多数不逐页标注。可看行款是否突然变化、纸色深浅是否跳变、版心刻工名是否中断。研究用途上，补配页要单独列目，不能混入原刻统计。</div>
+        </details>
+        <details>
+          <summary>家谱和方志的版本核对与别集有什么不同？</summary>
+          <div class="faq-body">家谱、方志多为地方刻，刻工名少、牌记简略，递藏印也少。核对重点转向卷首序跋年代、修纂人名、目录与正文卷数是否一致，以及是否有后人续修增刻页。</div>
+        </details>
+      </section>
+
+      <!-- 8 用户评论 -->
+      <section class="section" id="reviews">
+        <div class="section-head">
+          <h2>读者评论：核对过程中的实际遭遇</h2>
+          <span class="kicker">含中性意见与吐槽</span>
+        </div>
+        <ul class="review-list">
+          <li class="review">
+            <div class="who"><span class="avatar">周</span>周慕云 · 2026-11-05 <span class="stars">★★★★☆</span></div>
+            <p>按六步法核《方舆胜览》明万历本，卷端“胜览”改刻这条帮我省了两天。就是刻工索引按单字反查，遇到同名不同籍贯还得人工筛，稍微费劲。</p>
+          </li>
+          <li class="review">
+            <div class="who"><span class="avatar">陆</span>陆敬亭 · 2026-11-02 <span class="stars">★★★☆☆</span></div>
+            <p>《四部丛刊》那条说明更正来得及时，但 10 月 15 日拍卖的《昌黎先生集》标注“宋刻”，我看了书影，东雅堂牌记那么明显，拍卖行还是照旧写宋刻。核对表有用，执行的人不用。</p>
+          </li>
+          <li class="review">
+            <div class="who"><span class="avatar">程</span>程砚秋 · 2026-10-28 <span class="stars">★★★★★</span></div>
+            <p>天图《读史方舆纪要》钞本改“待核”这一改我认同。之前那条“清初钞本”没有避讳依据，我把书影放大看了三遍也没找到支撑。宁可标待核。</p>
+          </li>
+          <li class="review">
+            <div class="who"><span class="avatar">何</span>何叔衡 · 2026-10-26 <span class="stars">★★★☆☆</span></div>
+            <p>藏书印核对写得太客气了。旧书市场一方“八千卷楼”伪印 200 元就能刻，拿印推递藏基本靠运气。建议把“印文比对”放到第一位，别先看位置。</p>
+          </li>
+          <li class="review">
+            <div class="who"><span class="avatar">沈</span>沈知白 · 2026-10-21 <span class="stars">★★★★☆</span></div>
+            <p>家谱那一节讲续修增刻页，正好对上我手里的《毗陵沈氏宗谱》。光绪本后面附了民国续修六页，纸色明显偏黄，目录却没标。这类细节别处很少写。</p>
+          </li>
+          <li class="review">
+            <div class="who"><span class="avatar">吴</span>吴梅影 · 2026-10-17 <span class="stars">★★☆☆☆</span></div>
+            <p>民国影印《李太白文集》开价 4,800 元那位，我只想说版权页不是鉴定书。不过馆藏目录里有的条目书影只有卷端一张，想核补配页还是得跑馆。</p>
+          </li>
+        </ul>
+      </section>
+
+      <!-- 9 相关资讯 -->
+      <section class="section" id="news">
+        <div class="section-head">
+          <h2>相关资讯：馆藏、拍卖与整理动态</h2>
+          <span class="kicker">标注来源与日期</span>
+        </div>
+        <div class="news-grid">
+          <div class="news-item">
+            <time datetime="2026-11-06">2026-11-06 · 国家图书馆</time>
+            <a href="/#updates">中华古籍资源库新增影印底本 214 种</a>
+            <p>方志 63 种、别集 88 种、丛书零种 63 种，均可在线查看卷端与牌记。</p>
+          </div>
+          <div class="news-item">
+            <time datetime="2026-10-30">2026-10-30 · 上海图书馆</time>
+            <a href="/#featured">《方舆胜览》明万历本补拍书影 8 幅</a>
+            <p>新增卷端、牌记、藏书印局部，索书号 812.3/2741。</p>
+          </div>
+          <div class="news-item">
+            <time datetime="2026-10-25">2026-10-25 · 南京图书馆</time>
+            <a href="/#featured">《渔洋山人精华录》康熙刻本新拍 12 幅</a>
+            <p>含藏书印 4 方，“历”字不避讳，与康熙早期刻书习惯一致。</p>
+          </div>
+          <div class="news-item">
+            <time datetime="2026-10-15">2026-10-15 · 拍卖记录</time>
+            <a href="/#analysis">《昌黎先生集》标“宋刻”，牌记实为东雅堂</a>
+            <p>行款每半页十行、行二十字，与明嘉靖翻本一致。拍卖行未更正标注。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 10 相关推荐 -->
+      <section class="section" id="recommend">
+        <div class="section-head">
+          <h2>相关推荐：继续查的关键词</h2>
+          <span class="kicker">按线索选</span>
+        </div>
+        <div class="rec-tags">
+          <a href="/#analysis">宋刻残本补配页辨识</a>
+          <a href="/#guide">避讳缺笔年代判断</a>
+          <a href="/#featured">胡克家刻本避讳回改</a>
+          <a href="/#channels">刻工名反查方法</a>
+          <a href="/#reviews">八千卷楼伪印辨别</a>
+          <a href="/#featured">殿本内府刻书行款</a>
+          <a href="/#channels">丛书零种抽出单卖</a>
+          <a href="/#guide">家谱续修增刻页</a>
+          <a href="/#featured">民国影印描润问题</a>
+          <a href="/#analysis">东雅堂翻刻本牌记</a>
+        </div>
+      </section>
+
+      <!-- 11 时间线 -->
+      <section class="section" id="timeline">
+        <div class="section-head">
+          <h2>版本事件时间线：近一个月的核对记录</h2>
+          <span class="kicker">可逐条回溯</span>
+        </div>
+        <ul class="timeline">
+          <li><b>10 月 15 日</b><span>《昌黎先生集》上拍，标注“宋刻”，牌记显示东雅堂，行款与明嘉靖翻本一致。</span></li>
+          <li><b>10 月 18 日</b><span>刻工名索引上线，覆盖嘉靖至万历间刻工 316 人，支持单字反查。</span></li>
+          <li><b>10 月 20 日</b><span>旧书市场民国影印《李太白文集》以“据宋本影印”要价 4,800 元。</span></li>
+          <li><b>10 月 24 日</b><span>天图《读史方舆纪要》钞本条目由“清初钞本”改为“待核”。</span></li>
+          <li><b>10 月 29 日</b><span>南图《渔洋山人精华录》康熙刻本补拍 12 幅书影，含藏书印 4 方。</span></li>
+          <li><b>11 月 3 日</b><span>《四部丛刊》影印说明修订，补入“间有描润”一句。</span></li>
+          <li><b>11 月 6 日</b><span>国图资源库新增影印底本 214 种，方志类可在线核对卷端与牌记。</span></li>
+        </ul>
+      </section>
+
+    </main>
+
+    <aside aria-label="侧栏导航与速览">
+      <div class="aside-card side-nav" id="sideNav">
+        <h3>页内导航</h3>
+        <ul>
+          <li><a href="/#overview">领域概览</a></li>
+          <li><a href="/#featured">精选内容推荐</a></li>
+          <li><a href="/#updates">最新更新</a></li>
+          <li><a href="/#channels">分类频道</a></li>
+          <li><a href="/#analysis">深度解析</a></li>
+          <li><a href="/#guide">体验指南</a></li>
+          <li><a href="/#faq">常见问答</a></li>
+          <li><a href="/#reviews">读者评论</a></li>
+          <li><a href="/#news">相关资讯</a></li>
+          <li><a href="/#recommend">相关推荐</a></li>
+          <li><a href="/#timeline">版本时间线</a></li>
+        </ul>
+      </div>
+
+      <div class="aside-card">
+        <h3>本周核对速览</h3>
+        <ul class="mini-list">
+          <li><time datetime="2026-11-08">11-08</time>《方舆胜览》卷端改刻说明补入</li>
+          <li><time datetime="2026-11-06">11-06</time>新增影印底本 214 种</li>
+          <li><time datetime="2026-11-03">11-03</time>《四部丛刊》说明更正</li>
+          <li><time datetime="2026-10-29">10-29</time>南图新拍书影 12 幅</li>
+          <li><time datetime="2026-10-24">10-24</time>钞本条目改“待核”</li>
+        </ul>
+      </div>
+
+      <div class="aside-card">
+        <h3>六维核对表</h3>
+        <ul class="mini-list">
+          <li>牌记原文</li>
+          <li>卷端题名</li>
+          <li>行款字数</li>
+          <li>刻工名</li>
+          <li>避讳缺笔</li>
+          <li>藏书印与递藏</li>
+        </ul>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="brand" style="gap:10px">
+          <svg viewBox="0 0 64 64" width="34" height="34" role="img" aria-label="云芳阁集搜页脚标志">
+            <rect width="64" height="64" rx="13" fill="#b8912f"/>
+            <path d="M15 19h34v5.5H15z" fill="#2f4b3c"/>
+            <path d="M15 30h34v5.5H15z" fill="#2f4b3c" opacity=".85"/>
+            <path d="M15 41h21v5.5H15z" fill="#2f4b3c" opacity=".7"/>
+          </svg>
+          <span class="brand-text">
+            <span class="name">云芳阁集搜</span>
+            <span class="sub">古籍影印 · 版本检索</span>
+          </span>
+        </div>
+        <p>把馆藏目录、影印说明与题跋印章放在同一张核对表上，为查重、购藏与家藏整理提供可逐条抄录的字段。</p>
+      </div>
+
+      <div class="footer-col">
+        <h4>核对入口</h4>
+        <ul>
+          <li><a href="/#overview">领域概览</a></li>
+          <li><a href="/#guide">六步核对指南</a></li>
+          <li><a href="/#analysis">深度解析</a></li>
+          <li><a href="/#faq">常见问答</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>频道分类</h4>
+        <ul>
+          <li><a href="/#channels">宋元刻本</a></li>
+          <li><a href="/#channels">明嘉靖刻本</a></li>
+          <li><a href="/#channels">殿本与内府刻书</a></li>
+          <li><a href="/#channels">丛书零种</a></li>
+          <li><a href="/#channels">藏书印与递藏</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>动态与反馈</h4>
+        <ul>
+          <li><a href="/#updates">最新更新</a></li>
+          <li><a href="/#news">相关资讯</a></li>
+          <li><a href="/#reviews">读者评论</a></li>
+          <li><a href="/#timeline">版本时间线</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-note">
+      <span>页面中的版本条目、书影与读者留言为示例数据，仅用于展示核对方法与字段结构；馆藏信息请以各馆目录原书著录为准。</span>
+      <span class="upd">更新时间：2026-11-08（对应“方舆胜览卷端改刻说明”与“新增影印底本 214 种”两条正文更新）</span>
+      <span>© 2026 云芳阁集搜</span>
+    </div>
+  </div>
+</footer>
+
+<button id="toTop" aria-label="回到顶部">↑</button>
+
+<script>
+(function(){
+  "use strict";
+
+  var navToggle = document.getElementById('navToggle');
+  var mainNav = document.getElementById('mainNav');
+  if(navToggle && mainNav){
+    navToggle.addEventListener('click', function(){
+      var open = mainNav.classList.toggle('open');
+      navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    mainNav.addEventListener('click', function(e){
+      if(e.target.tagName === 'A' && window.matchMedia('(max-width:980px)').matches){
+        mainNav.classList.remove('open');
+        navToggle.setAttribute('aria-expanded','false');
+      }
+    });
+  }
+
+  var toTop = document.getElementById('toTop');
+  function onScroll(){
+    if(window.scrollY > 480){ toTop.classList.add('show'); }
+    else { toTop.classList.remove('show'); }
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+  toTop.addEventListener('click', function(){
+    window.scrollTo({top:0, behavior:'smooth'});
+  });
+
+  // side nav highlight
+  var sideLinks = Array.prototype.slice.call(document.querySelectorAll('#sideNav a'));
+  var sections = sideLinks.map(function(a){
+    var id = a.getAttribute('href').replace('/#','');
+    return document.getElementById(id);
+  }).filter(Boolean);
+
+  if('IntersectionObserver' in window && sections.length){
+    var obs = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if(en.isIntersecting){
+          sideLinks.forEach(function(l){ l.classList.remove('active'); });
+          var hit = sideLinks.filter(function(l){ return l.getAttribute('href') === '/#' + en.target.id; })[0];
+          if(hit){ hit.classList.add('active'); }
+        }
+      });
+    }, {rootMargin:'-120px 0px -60% 0px', threshold:0});
+    sections.forEach(function(s){ obs.observe(s); });
+  }
+
+  // local search
+  var input = document.getElementById('siteSearch');
+  var fb = document.getElementById('searchFeedback');
+  var index = [
+    {t:'宋刻《文选》残本补配页', id:'featured'},
+    {t:'胡克家刻本避讳回改', id:'featured'},
+    {t:'明万历《方舆胜览》卷端改刻', id:'featured'},
+    {t:'武英殿刻本避讳缺笔', id:'featured'},
+    {t:'《四部丛刊》影印描润', id:'featured'},
+    {t:'国图新增影印底本 214 种', id:'updates'},
+    {t:'刻工名索引 316 人', id:'updates'},
+    {t:'《读史方舆纪要》钞本待核', id:'updates'},
+    {t:'宋元刻本频道', id:'channels'},
+    {t:'藏书印与递藏频道', id:'channels'},
+    {t:'六步版本核对指南', id:'guide'},
+    {t:'避讳缺笔年代下限', id:'faq'},
+    {t:'丛书零种辨识', id:'faq'},
+    {t:'家谱续修增刻页', id:'faq'},
+    {t:'东雅堂翻刻本牌记', id:'analysis'},
+    {t:'《昌黎先生集》拍卖标注', id:'news'},
+    {t:'八千卷楼伪印', id:'reviews'},
+    {t:'版本事件时间线', id:'timeline'}
+  ];
+
+  function render(q){
+    var kw = q.trim().toLowerCase();
+    if(!kw){ fb.classList.remove('show'); fb.innerHTML=''; return; }
+    var hits = index.filter(function(item){
+      return item.t.toLowerCase().indexOf(kw) > -1;
+    }).slice(0,6);
+    if(hits.length === 0){
+      fb.innerHTML = '<div class="empty">没有匹配条目。试试“避讳”“刻工”“牌记”“藏书印”。</div>';
+    }else{
+      fb.innerHTML = hits.map(function(h){
+        return '<a class="hit" href="/#'+h.id+'">'+h.t+'</a>';
+      }).join('');
+    }
+    fb.classList.add('show');
+  }
+
+  if(input && fb){
+    input.addEventListener('input', function(){ render(input.value); });
+    input.addEventListener('keydown', function(e){
+      if(e.key === 'Enter'){ e.preventDefault(); render(input.value); }
+      if(e.key === 'Escape'){ fb.classList.remove('show'); input.blur(); }
+    });
+    document.addEventListener('click', function(e){
+      if(!e.target.closest('.search-wrap')){ fb.classList.remove('show'); }
+    });
+    fb.addEventListener('click', function(e){
+      if(e.target.classList.contains('hit')){ fb.classList.remove('show'); }
+    });
+  }
+})();
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"WebSite",
+  "name":"云芳阁集搜",
+  "inLanguage":"zh-CN",
+  "description":"聚焦古籍影印本与版本检索，整理馆藏目录、避讳与刻工线索、影印底本差异及题跋印章辨读方法。"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {
+      "@type":"Question",
+      "name":"影印本上的“据宋本影印”能作为宋版依据吗？",
+      "acceptedAnswer":{"@type":"Answer","text":"不能直接作为依据。这句话说明影印时所用底本的来源声明，底本是否真是宋刻，要看影印说明是否注明藏家、索书号，以及能否核对原书书影。民国影印本中还常见描润、补配，字迹已非原样。"}
+    },
+    {
+      "@type":"Question",
+      "name":"避讳缺笔字怎么用来判断刻印年代？",
+      "acceptedAnswer":{"@type":"Answer","text":"缺笔字给出的是年代下限：出现“宁”字缺笔，刻印不会早于道光。没有缺笔不能推出上限，因为可能刻工疏漏或后印挖改。记录时要写清书名、卷次、页码与缺笔部位，方便他人复核。"}
+    },
+    {
+      "@type":"Question",
+      "name":"翻刻本和原刻本在行款上有什么区别？",
+      "acceptedAnswer":{"@type":"Answer","text":"翻刻通常照原行款翻雕，行数字数往往一致，区别在笔画刀法、版心刻工名和牌记。胡克家刻《文选》行款仿宋本，但牌记改为“嘉庆十四年胡克家重刻”，刻工名也换成清代匠人。"}
+    },
+    {
+      "@type":"Question",
+      "name":"藏书印能证明一部书的递藏经过吗？",
+      "acceptedAnswer":{"@type":"Answer","text":"藏书印提供递藏线索，但需要印文、钤盖位置、印主藏书目录三项互证。民国书商伪钤名家印的情况存在，单凭一方印写递藏链容易被推翻。证据不全时记为待核。"}
+    },
+    {
+      "@type":"Question",
+      "name":"丛书零种和单行本怎么区分？",
+      "acceptedAnswer":{"@type":"Answer","text":"看版心下方是否有丛书名、书根是否有丛书总目，以及牌记是否另题丛书名。丛书零种常被抽出单卖，装帧改换后不易辨认。核对时要查丛书总目和子目卷数是否吻合。"}
+    },
+    {
+      "@type":"Question",
+      "name":"补配页在影印本里看得出来吗？",
+      "acceptedAnswer":{"@type":"Answer","text":"部分影印说明会注明间有补配，但多数不逐页标注。可看行款是否突然变化、纸色深浅是否跳变、版心刻工名是否中断。研究用途上，补配页要单独列目，不能混入原刻统计。"}
+    },
+    {
+      "@type":"Question",
+      "name":"家谱和方志的版本核对与别集有什么不同？",
+      "acceptedAnswer":{"@type":"Answer","text":"家谱、方志多为地方刻，刻工名少、牌记简略，递藏印也少。核对重点转向卷首序跋年代、修纂人名、目录与正文卷数是否一致，以及是否有后人续修增刻页。"}
+    }
+  ]
+}
+</script>
+</body>
+  </html>

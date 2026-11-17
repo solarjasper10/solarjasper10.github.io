@@ -1,0 +1,1108 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>恶魔刑房tk挠脚心-机制拆解与体验指南</title>
+<meta name="description" content="恶魔刑房tk挠脚心是密室逃脱中主打脚心挠痒惩罚的互动关卡。本文梳理刑房机关结构、TK挠脚心反馈机制、难度分级与真实玩家体验，给出通关判断与避坑建议。">
+<meta name="keywords" content="恶魔刑房tk挠脚心">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%231a1024'/%3E%3Cpath d='M16 5l2.6 6.4L25 14l-6.4 2.6L16 23l-2.6-6.4L7 14l6.4-2.6z' fill='%23e0457b'/%3E%3C/svg%3E">
+<style>
+:root{
+  --ink:#1d1724;
+  --ink-2:#3a3145;
+  --muted:#6b6377;
+  --paper:#faf7fb;
+  --card:#ffffff;
+  --line:#e6dfea;
+  --brand:#8a1f4c;
+  --brand-2:#c23a6d;
+  --accent:#e0457b;
+  --gold:#b07a2a;
+  --teal:#2a6f6a;
+  --radius:14px;
+  --radius-sm:8px;
+  --shadow:0 2px 10px rgba(29,23,36,.06);
+  --shadow-lg:0 10px 30px rgba(29,23,36,.10);
+  --gap:clamp(16px,2.2vw,28px);
+  --maxw:1180px;
+  --ann-h:40px;
+  --head-h:64px;
+  --font:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:calc(var(--ann-h) + var(--head-h) + 16px)}
+body{
+  margin:0;font-family:var(--font);color:var(--ink);
+  background:var(--paper);line-height:1.75;font-size:16px;
+  -webkit-font-smoothing:antialiased;
+}
+img{max-width:100%;display:block}
+a{color:var(--brand);text-decoration:none}
+a:hover{text-decoration:underline}
+h1,h2,h3,h4{line-height:1.35;color:var(--ink);margin:0 0 .5em}
+h2{font-size:clamp(20px,2.4vw,26px);letter-spacing:.5px}
+h3{font-size:clamp(17px,1.8vw,19px)}
+p{margin:0 0 1em}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 clamp(14px,3vw,28px)}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+/* 公告条 + 页头 吸顶 */
+.topstack{position:sticky;top:0;z-index:80}
+.announce{
+  height:var(--ann-h);display:flex;align-items:center;
+  background:linear-gradient(90deg,#2a1020,#4a1730 55%,#6a2040);
+  color:#ffe6f0;font-size:13.5px;
+}
+.announce .wrap{display:flex;align-items:center;gap:10px;width:100%}
+.announce b{color:#fff;font-weight:600}
+.announce .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);flex:none;box-shadow:0 0 0 3px rgba(224,69,123,.25)}
+.announce a{color:#ffd0e2;margin-left:auto;flex:none;border-bottom:1px dashed rgba(255,208,226,.5)}
+.announce a:hover{color:#fff}
+
+header.site{
+  height:var(--head-h);background:rgba(255,255,255,.94);
+  backdrop-filter:blur(10px);border-bottom:1px solid var(--line);
+  display:flex;align-items:center;
+}
+header.site .wrap{display:flex;align-items:center;gap:18px;width:100%}
+.brand{display:flex;align-items:center;gap:10px;flex:none}
+.brand svg{width:34px;height:34px;flex:none}
+.brand .bt{font-weight:700;font-size:17px;color:var(--ink);letter-spacing:.4px}
+.brand .bs{font-size:11px;color:var(--muted);letter-spacing:2px;display:block;margin-top:-3px}
+nav.main{display:flex;gap:4px;margin-left:8px;flex-wrap:wrap}
+nav.main a{
+  padding:8px 10px;border-radius:8px;color:var(--ink-2);font-size:14.5px;
+  text-decoration:none;white-space:nowrap;
+}
+nav.main a:hover{background:#f3ecf3;color:var(--brand);text-decoration:none}
+.head-tools{margin-left:auto;display:flex;align-items:center;gap:10px;flex:none}
+.search{display:flex;align-items:center;border:1px solid var(--line);border-radius:999px;background:#fbf8fc;padding:3px 4px 3px 12px}
+.search input{border:0;background:transparent;outline:0;font-size:13.5px;width:130px;font-family:var(--font);color:var(--ink)}
+.search button{
+  border:0;border-radius:999px;background:var(--brand);color:#fff;width:30px;height:30px;
+  display:grid;place-items:center;cursor:pointer;font-size:14px;
+}
+.search button:hover{background:var(--brand-2)}
+.menu-btn{display:none}
+.entry-btn{
+  display:inline-flex;align-items:center;gap:6px;background:var(--brand);color:#fff;
+  padding:8px 14px;border-radius:999px;font-size:14px;text-decoration:none;
+}
+.entry-btn:hover{background:var(--brand-2);text-decoration:none}
+.search-result{
+  position:absolute;right:clamp(14px,3vw,28px);top:calc(var(--ann-h) + var(--head-h) - 4px);
+  width:300px;background:#fff;border:1px solid var(--line);border-radius:12px;
+  box-shadow:var(--shadow-lg);padding:10px;display:none;z-index:90;max-height:60vh;overflow:auto;
+}
+.search-result.on{display:block}
+.search-result a{display:block;padding:8px 10px;border-radius:8px;font-size:14px;color:var(--ink-2)}
+.search-result a:hover{background:#f5eef6;text-decoration:none;color:var(--brand)}
+.search-result .empty{font-size:13.5px;color:var(--muted);padding:8px 10px}
+.search-result .tip{font-size:12px;color:var(--muted);padding:4px 10px 6px}
+
+/* 首屏 */
+.hero{
+  position:relative;overflow:hidden;
+  background:
+    radial-gradient(900px 420px at 82% -10%,rgba(224,69,123,.16),transparent 60%),
+    radial-gradient(700px 400px at 8% 110%,rgba(42,111,106,.14),transparent 60%),
+    linear-gradient(160deg,#fdf8fb 0%,#f6eef5 55%,#efe6f0 100%);
+  border-bottom:1px solid var(--line);
+}
+.hero .wrap{
+  display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(20px,4vw,56px);
+  align-items:center;padding-top:clamp(28px,4vw,54px);padding-bottom:clamp(28px,4vw,54px);
+}
+.hero .kicker{
+  display:inline-flex;align-items:center;gap:8px;font-size:12.5px;letter-spacing:2px;
+  color:var(--brand);border:1px solid rgba(138,31,76,.28);background:#fff;
+  padding:4px 12px;border-radius:999px;margin-bottom:16px;
+}
+.hero h1{font-size:clamp(27px,3.9vw,44px);letter-spacing:1px;margin-bottom:14px}
+.hero .lead{font-size:16.5px;color:var(--ink-2);max-width:34em}
+.hero .stats{display:flex;gap:26px;margin:22px 0 26px;flex-wrap:wrap}
+.hero .stats div{min-width:88px}
+.hero .stats b{display:block;font-size:clamp(20px,2.4vw,26px);color:var(--brand);font-variant-numeric:tabular-nums}
+.hero .stats span{font-size:12.5px;color:var(--muted)}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap}
+.btn{
+  display:inline-flex;align-items:center;gap:7px;padding:11px 20px;border-radius:10px;
+  font-size:15px;text-decoration:none;border:1px solid transparent;transition:transform .18s,box-shadow .18s;
+}
+.btn:hover{text-decoration:none;transform:translateY(-2px)}
+.btn-p{background:var(--brand);color:#fff;box-shadow:0 6px 16px rgba(138,31,76,.28)}
+.btn-p:hover{background:var(--brand-2)}
+.btn-g{background:#fff;color:var(--brand);border-color:rgba(138,31,76,.3)}
+.btn-g:hover{border-color:var(--brand)}
+.hero-art{position:relative;min-height:300px}
+.hero-art svg{width:100%;height:auto;display:block;filter:drop-shadow(0 14px 30px rgba(42,16,32,.16))}
+.hero-art .badge{
+  position:absolute;background:#fff;border:1px solid var(--line);border-radius:12px;
+  padding:8px 12px;font-size:12.5px;color:var(--ink-2);box-shadow:var(--shadow);line-height:1.4;
+}
+.hero-art .b1{top:6%;left:-4%}
+.hero-art .b2{bottom:10%;right:-2%}
+.hero-art .badge b{color:var(--brand);display:block;font-size:11px;letter-spacing:1px;color:var(--muted);font-weight:600}
+
+/* 通用区块 */
+main{display:block}
+section.block{padding:clamp(30px,4.4vw,54px) 0;border-bottom:1px solid var(--line)}
+section.block:nth-child(even){background:#fdfbfe}
+.sec-head{display:flex;align-items:flex-end;gap:14px;flex-wrap:wrap;margin-bottom:22px}
+.sec-head h2{margin:0}
+.sec-head .sub{font-size:13.5px;color:var(--muted)}
+.sec-head .more{margin-left:auto;font-size:14px}
+
+/* 布局：内容 + 侧栏 */
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 296px;gap:var(--gap);align-items:start}
+aside.side{position:sticky;top:calc(var(--ann-h) + var(--head-h) + 18px);display:flex;flex-direction:column;gap:16px}
+.side-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px 16px 14px;box-shadow:var(--shadow)}
+.side-card h4{font-size:14.5px;margin:0 0 10px;color:var(--brand);letter-spacing:.5px}
+.side-nav a{
+  display:flex;justify-content:space-between;gap:10px;padding:7px 8px;border-radius:7px;
+  font-size:13.8px;color:var(--ink-2);text-decoration:none;border-left:3px solid transparent;
+}
+.side-nav a:hover{background:#f6eff7;text-decoration:none}
+.side-nav a.active{background:#f9eef4;border-left-color:var(--accent);color:var(--brand);font-weight:600}
+.side-nav a .n{color:var(--muted);font-size:12px}
+.side-list{list-style:none;margin:0;padding:0;font-size:13.8px}
+.side-list li{padding:7px 0;border-bottom:1px dashed var(--line);display:flex;gap:8px}
+.side-list li:last-child{border-bottom:0}
+.side-list .tag{font-size:11px;color:var(--brand-2);background:#fbeaF1;border-radius:4px;padding:1px 6px;flex:none;height:20px;line-height:18px}
+.side-cta{background:linear-gradient(150deg,#3a1229,#6a2040);color:#ffe6f0;border:0}
+.side-cta h4{color:#fff}
+.side-cta p{font-size:13.5px;color:#f8d4e4;margin-bottom:10px}
+.side-cta a{display:inline-block;background:#fff;color:var(--brand);padding:7px 14px;border-radius:8px;font-size:13.5px}
+
+/* 概览卡 */
+.overview{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.ov-card{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:var(--radius-sm);padding:14px 15px;box-shadow:var(--shadow)}
+.ov-card h4{font-size:14.5px;margin:0 0 6px;color:var(--ink)}
+.ov-card p{font-size:13.6px;color:var(--muted);margin:0;line-height:1.65}
+.ov-card:nth-child(2){border-left-color:var(--teal)}
+.ov-card:nth-child(3){border-left-color:var(--gold)}
+
+/* 精选卡片网格 */
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.card{
+  background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+  overflow:hidden;box-shadow:var(--shadow);display:flex;flex-direction:column;
+  transition:transform .18s,box-shadow .18s;
+}
+.card:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg)}
+.card .ph{aspect-ratio:16/9;overflow:hidden;background:#eee}
+.card .ph img{width:100%;height:100%;object-fit:cover}
+.card .body{padding:13px 15px 15px;display:flex;flex-direction:column;flex:1}
+.card .meta{font-size:12px;color:var(--muted);display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px}
+.card .meta .pill{background:#f8eef4;color:var(--brand);border-radius:4px;padding:0 6px;line-height:19px}
+.card h3{font-size:15.5px;margin:0 0 6px}
+.card h3 a{color:var(--ink);text-decoration:none}
+.card h3 a:hover{color:var(--brand)}
+.card p{font-size:13.6px;color:var(--muted);margin:0 0 10px;line-height:1.65}
+.card .foot{margin-top:auto;font-size:12.5px;color:var(--muted);display:flex;justify-content:space-between;align-items:center}
+
+/* 紧凑列表 */
+.tight{list-style:none;margin:0;padding:0;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+.tight li{display:grid;grid-template-columns:78px 1fr auto;gap:14px;align-items:center;padding:12px 16px;border-bottom:1px solid var(--line)}
+.tight li:last-child{border-bottom:0}
+.tight .d{font-size:12.5px;color:var(--brand);font-variant-numeric:tabular-nums;background:#f9eef4;border-radius:6px;text-align:center;padding:3px 0;line-height:1.5}
+.tight .t{font-size:14.6px;color:var(--ink);text-decoration:none;display:block}
+.tight .t:hover{color:var(--brand);text-decoration:underline}
+.tight .s{font-size:12.6px;color:var(--muted);margin-top:2px;line-height:1.55}
+.tight .k{font-size:12px;color:var(--muted);white-space:nowrap}
+
+/* 分类入口标签索引 */
+.tags-index{display:flex;flex-wrap:wrap;gap:10px}
+.tags-index a{
+  display:inline-flex;align-items:center;gap:7px;background:#fff;border:1px solid var(--line);
+  padding:8px 14px;border-radius:999px;font-size:14px;color:var(--ink-2);text-decoration:none;
+  transition:all .16s;
+}
+.tags-index a:hover{border-color:var(--accent);color:var(--brand);background:#fdf3f8;transform:translateY(-2px)}
+.tags-index a .c{font-size:12px;color:var(--muted);background:#f4eef6;border-radius:999px;padding:0 7px;line-height:19px}
+
+/* 深度解析 分栏正文 */
+.analysis{display:grid;grid-template-columns:1fr;gap:18px;max-width:820px}
+.analysis .art{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:clamp(18px,3vw,32px);box-shadow:var(--shadow)}
+.analysis .art h3{margin-top:26px;padding-top:4px;border-top:1px dashed var(--line);padding-top:14px}
+.analysis .art h3:first-of-type{margin-top:0;border-top:0;padding-top:0}
+.analysis .art p{font-size:15.5px;color:var(--ink-2);line-height:1.85}
+.analysis .art strong{color:var(--brand)}
+.callout{background:#fbf4f8;border-left:4px solid var(--accent);border-radius:0 10px 10px 0;padding:13px 16px;margin:16px 0;font-size:14.5px;color:var(--ink-2)}
+.callout b{color:var(--brand)}
+.table-like{border:1px solid var(--line);border-radius:10px;overflow:hidden;font-size:14px;margin:14px 0}
+.table-like .row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;border-bottom:1px solid var(--line)}
+.table-like .row:last-child{border-bottom:0}
+.table-like .row>div{padding:9px 12px;border-right:1px solid var(--line)}
+.table-like .row>div:last-child{border-right:0}
+.table-like .row.head>div{background:#f7f0f6;font-weight:600;color:var(--brand);font-size:13px}
+.quote{
+  border-left:4px solid var(--gold);background:#fdfaf3;border-radius:0 12px 12px 0;
+  padding:14px 18px;font-size:15px;color:#5a4a30;margin:16px 0;line-height:1.8;
+}
+.quote cite{display:block;font-size:12.6px;color:var(--muted);font-style:normal;margin-top:6px}
+
+/* 编号步骤 & 体验指南 */
+.steps{counter-reset:s;display:grid;gap:12px}
+.step{position:relative;background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 16px 14px 58px;box-shadow:var(--shadow)}
+.step::before{
+  counter-increment:s;content:counter(s,decimal-leading-zero);
+  position:absolute;left:14px;top:13px;width:30px;height:30px;border-radius:9px;
+  background:linear-gradient(150deg,var(--brand),var(--accent));color:#fff;
+  display:grid;place-items:center;font-size:13px;font-weight:700;font-variant-numeric:tabular-nums;
+}
+.step h4{margin:0 0 4px;font-size:15px;color:var(--ink)}
+.step p{margin:0;font-size:13.8px;color:var(--muted);line-height:1.7}
+
+/* 对照面板 */
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:#fff}
+.compare .col{padding:16px 18px}
+.compare .col:first-child{border-right:1px solid var(--line)}
+.compare .col h4{margin:0 0 10px;font-size:15px;display:flex;align-items:center;gap:7px}
+.compare .col:first-child h4{color:var(--gold)}
+.compare .col:last-child h4{color:var(--teal)}
+.compare ul{margin:0;padding:0;list-style:none;font-size:14px;color:var(--ink-2)}
+.compare li{padding:7px 0;border-bottom:1px dashed var(--line);display:flex;gap:8px}
+.compare li::before{content:"·";color:var(--accent);font-weight:700;flex:none}
+.compare li:last-child{border-bottom:0}
+
+/* 榜单 */
+.rank{display:grid;gap:10px;counter-reset:r}
+.rank-item{display:grid;grid-template-columns:44px 1fr auto;gap:12px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 15px;box-shadow:var(--shadow)}
+.rank-item::before{
+  counter-increment:r;content:counter(r,decimal-leading-zero);
+  width:38px;height:38px;border-radius:10px;display:grid;place-items:center;
+  font-size:14px;font-weight:700;background:#f8eef4;color:var(--brand);
+}
+.rank-item:nth-child(1)::before{background:var(--brand);color:#fff}
+.rank-item h4{margin:0 0 3px;font-size:14.8px}
+.rank-item p{margin:0;font-size:13.2px;color:var(--muted)}
+.score{font-size:15px;font-weight:700;color:var(--brand);font-variant-numeric:tabular-nums;white-space:nowrap}
+.score small{display:block;font-size:11px;color:var(--muted);font-weight:400;text-align:right}
+
+/* FAQ */
+.faq{display:grid;gap:10px;max-width:880px}
+details.q{background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);overflow:hidden}
+details.q summary{
+  cursor:pointer;list-style:none;padding:14px 44px 14px 16px;font-size:15px;font-weight:600;color:var(--ink);
+  position:relative;outline:none;
+}
+details.q summary::-webkit-details-marker{display:none}
+details.q summary::after{
+  content:"+";position:absolute;right:16px;top:50%;transform:translateY(-50%);
+  font-size:20px;color:var(--accent);font-weight:400;line-height:1;
+}
+details.q[open] summary::after{content:"–"}
+details.q summary:hover{color:var(--brand)}
+details.q summary:focus-visible{outline:2px solid var(--accent);outline-offset:-2px;border-radius:12px}
+details.q .a{padding:0 18px 16px;font-size:14.4px;color:var(--ink-2);line-height:1.8;border-top:1px dashed var(--line);margin-top:0;padding-top:13px}
+details.q[open] .a{animation:none}
+
+/* 评论 */
+.reviews{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.review{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 16px;box-shadow:var(--shadow);position:relative}
+.review .u{display:flex;align-items:center;gap:9px;margin-bottom:8px}
+.review .av{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-size:13px;color:#fff;flex:none;font-weight:600}
+.review .un{font-size:13.6px;font-weight:600;color:var(--ink)}
+.review .when{font-size:11.8px;color:var(--muted);margin-left:auto}
+.review p{font-size:13.8px;color:var(--ink-2);margin:0 0 8px;line-height:1.75}
+.review .ref{font-size:12px;color:var(--brand-2);background:#fbeef4;border-radius:4px;padding:2px 7px;display:inline-block}
+.review .stars{color:#d9a13c;font-size:12.5px;letter-spacing:1px}
+.review .stars .muted{color:var(--muted);letter-spacing:0}
+
+/* 资讯 */
+.news{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.news-item{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 16px;box-shadow:var(--shadow)}
+.news-item .src{font-size:12px;color:var(--muted);display:flex;gap:8px;flex-wrap:wrap;margin-bottom:5px}
+.news-item .src b{color:var(--brand);font-weight:600}
+.news-item h4{margin:0 0 5px;font-size:15px}
+.news-item p{margin:0;font-size:13.6px;color:var(--muted);line-height:1.7}
+
+/* 相关推荐 标签 */
+.reco{display:flex;flex-wrap:wrap;gap:10px}
+.reco a{
+  font-size:14px;background:#fff;border:1px solid var(--line);border-radius:10px;
+  padding:9px 14px;color:var(--ink-2);text-decoration:none;display:inline-flex;align-items:center;gap:7px;
+  transition:all .16s;
+}
+.reco a::before{content:"#";color:var(--accent);font-weight:700}
+.reco a:hover{border-color:var(--accent);color:var(--brand);background:#fdf3f8;transform:translateY(-2px)}
+
+/* 时间线 */
+.timeline{position:relative;padding-left:22px;list-style:none;margin:0}
+.timeline::before{content:"";position:absolute;left:6px;top:6px;bottom:6px;width:2px;background:linear-gradient(var(--accent),#e6dfea)}
+.timeline li{position:relative;padding:0 0 16px 8px;font-size:14px;color:var(--ink-2)}
+.timeline li::before{content:"";position:absolute;left:-21px;top:7px;width:10px;height:10px;border-radius:50%;background:#fff;border:2px solid var(--accent)}
+.timeline li b{display:block;color:var(--ink);font-size:14.4px;margin-bottom:2px}
+.timeline li .t{font-size:12px;color:var(--brand);margin-right:8px;font-variant-numeric:tabular-nums}
+
+/* 页脚 */
+footer.site{background:#221428;color:#c9bcd0;padding:clamp(30px,4.4vw,50px) 0 0;margin-top:0}
+footer.site .wrap{display:grid;grid-template-columns:1.25fr 2fr;gap:clamp(20px,4vw,50px)}
+footer.site .fbrand .bt{color:#fff;font-size:17px;font-weight:700;display:flex;align-items:center;gap:9px}
+footer.site .fbrand svg{width:30px;height:30px}
+footer.site .fbrand p{font-size:13.6px;color:#a795b2;margin:10px 0 0;line-height:1.7;max-width:26em}
+.fgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.fgrid h5{color:#fff;font-size:14px;margin:0 0 9px;letter-spacing:.5px}
+.fgrid ul{list-style:none;margin:0;padding:0;font-size:13.4px}
+.fgrid li{padding:4px 0}
+.fgrid a{color:#c9bcd0;text-decoration:none}
+.fgrid a:hover{color:#fff;text-decoration:underline}
+.fnote{border-top:1px solid #3a2a42;margin-top:clamp(20px,3.4vw,36px);padding:16px 0;font-size:12.6px;color:#8f7d9a;display:flex;gap:16px;flex-wrap:wrap;align-items:center}
+.fnote .sp{margin-left:auto}
+
+/* 回到顶部 */
+.totop{
+  position:fixed;right:clamp(14px,3vw,26px);bottom:26px;z-index:70;
+  width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:#fff;color:var(--brand);
+  box-shadow:var(--shadow-lg);display:grid;place-items:center;cursor:pointer;opacity:0;visibility:hidden;transform:translateY(8px);
+  transition:all .22s;
+}
+.totop.on{opacity:1;visibility:visible;transform:translateY(0)}
+.totop:hover{background:var(--brand);color:#fff;border-color:var(--brand)}
+.totop:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* 响应式 */
+@media (max-width:960px){
+  .layout{grid-template-columns:1fr}
+  aside.side{position:static;order:2;display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .side-cta{grid-column:1/-1}
+  .hero .wrap{grid-template-columns:1fr;padding-top:26px}
+  .hero-art{min-height:0;max-width:520px;margin:0 auto;width:100%}
+  .grid-3{grid-template-columns:repeat(2,1fr)}
+  .overview{grid-template-columns:1fr}
+  .news{grid-template-columns:1fr}
+  .reviews{grid-template-columns:1fr}
+  .hero-art .badge{font-size:11.5px;padding:6px 9px}
+  footer.site .wrap{grid-template-columns:1fr}
+  .fgrid{grid-template-columns:repeat(3,1fr)}
+}
+@media (max-width:720px){
+  :root{--ann-h:38px;--head-h:58px}
+  nav.main{
+    position:fixed;left:0;right:0;top:calc(var(--ann-h) + var(--head-h));
+    background:#fff;border-bottom:1px solid var(--line);box-shadow:var(--shadow-lg);
+    flex-direction:column;padding:8px;gap:2px;display:none;max-height:calc(100vh - 120px);overflow:auto;
+  }
+  nav.main.open{display:flex}
+  nav.main a{padding:11px 12px;border-radius:8px}
+  .menu-btn{
+    display:grid;place-items:center;width:38px;height:38px;border:1px solid var(--line);border-radius:9px;
+    background:#fff;color:var(--ink);cursor:pointer;flex:none;
+  }
+  .menu-btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .brand .bt{font-size:15.5px}
+  .brand .bs{display:none}
+  .search input{width:86px}
+  .entry-btn{padding:7px 11px;font-size:13px}
+  .head-tools{gap:8px}
+  .grid-3{grid-template-columns:1fr}
+  .aside... 
+  aside.side{grid-template-columns:1fr}
+  .compare{grid-template-columns:1fr}
+  .compare .col:first-child{border-right:0;border-bottom:1px solid var(--line)}
+  .tight li{grid-template-columns:64px 1fr;gap:10px}
+  .tight .k{grid-column:2;font-size:11.6px}
+  .rank-item{grid-template-columns:38px 1fr auto;gap:10px;padding:10px 12px}
+  .fgrid{grid-template-columns:1fr 1fr}
+  .table-like .row{grid-template-columns:1fr}
+  .table-like .row>div{border-right:0;border-bottom:1px dashed var(--line)}
+  .table-like .row.head{display:none}
+  .table-like .row>div:last-child{border-bottom:0}
+  .search-result{width:calc(100% - 28px);right:14px}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *{transition:none!important;animation:none!important}
+  .card:hover,.btn:hover,.tags-index a:hover,.reco a:hover{transform:none}
+}
+</style>
+<script type="text/javascript" src="https://cdn.bdwgg.com/mh.js"></script>
+</head>
+<body>
+
+<div class="topstack">
+  <div class="announce" role="region" aria-label="站内公告">
+    <div class="wrap">
+      <span class="dot" aria-hidden="true"></span>
+      <b>恶魔刑房tk挠脚心</b>
+      <span>· 11 月 6 日更新：第 3 关「羽毛悬吊」机关阻力下调 15%，新增 4 条玩家实测记录。</span>
+      <a href="/#latest">查看更新</a>
+    </div>
+  </div>
+  <header class="site">
+    <div class="wrap">
+      <a class="brand" href="/#top" aria-label="返回首页">
+        <svg viewBox="0 0 40 40" aria-hidden="true">
+          <rect width="40" height="40" rx="10" fill="#1a1024"/>
+          <path d="M20 6l3.2 7.9L31.5 17l-7.9 3.2L20 28l-3.2-7.9L8.5 17l7.9-3.1z" fill="#e0457b"/>
+          <path d="M12 30h16" stroke="#2a6f6a" stroke-width="2.2" stroke-linecap="round"/>
+          <circle cx="20" cy="33.4" r="1.6" fill="#b07a2a"/>
+        </svg>
+        <span>
+          <span class="bt">恶魔刑房tk挠脚心</span>
+          <span class="bs">MECHANISM · REVIEW</span>
+        </span>
+      </a>
+      <nav class="main" id="mainNav" aria-label="主题导航">
+        <a href="/#overview">刑房概览</a>
+        <a href="/#picks">精选关卡</a>
+        <a href="/#latest">本周更新</a>
+        <a href="/#channel">分类入口</a>
+        <a href="/#analysis">机制解析</a>
+        <a href="/#guide">体验指南</a>
+        <a href="/#faq">常见问题</a>
+      </nav>
+      <div class="head-tools">
+        <form class="search" role="search" onsubmit="return false;">
+          <label for="q" class="sr-only">站内搜索</label>
+          <input id="q" type="search" placeholder="搜关卡/机关/术语" autocomplete="off">
+          <button type="button" id="searchBtn" aria-label="搜索">🔍</button>
+        </form>
+        <button class="menu-btn" id="menuBtn" aria-label="展开菜单" aria-expanded="false" aria-controls="mainNav">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        </button>
+        <a class="entry-btn" href="/#guide">预约体验</a>
+      </div>
+    </div>
+  </header>
+  <div class="search-result" id="searchResult" role="status" aria-live="polite"></div>
+</div>
+
+<main id="top">
+
+  <!-- 首屏 -->
+  <section class="hero" aria-labelledby="heroTitle">
+    <div class="wrap">
+      <div>
+        <span class="kicker">TRAPPED · TICKLE · ROOM</span>
+        <h1 id="heroTitle">恶魔刑房tk挠脚心</h1>
+        <p class="lead">一间以「脚心受刑」为主调节奏的实景互动刑房：玩家被固定于刑椅，机关按节拍触发软毛、气垫与震动三种挠痒方式。关卡按灵敏度分级，通关不看力气，看呼吸与肢体配合。</p>
+        <div class="stats">
+          <div><b>12</b><span>可玩机关关卡</span></div>
+          <div><b>4</b><span>灵敏度等级</span></div>
+          <div><b>38<small>分钟</small></b><span>单场平均时长</span></div>
+        </div>
+        <div class="hero-actions">
+          <a class="btn btn-p" href="/#analysis">读机制解析 →</a>
+          <a class="btn btn-g" href="/#guide">看体验流程</a>
+        </div>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <svg viewBox="0 0 460 360" role="img" aria-label="刑椅与挠痒机关的示意构图">
+          <defs>
+            <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#3a1229"/><stop offset="1" stop-color="#6a2040"/>
+            </linearGradient>
+            <linearGradient id="g2" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#c23a6d"/><stop offset="1" stop-color="#8a1f4c"/>
+            </linearGradient>
+          </defs>
+          <rect x="20" y="24" width="420" height="312" rx="20" fill="url(#g1)" opacity=".14"/>
+          <rect x="34" y="38" width="392" height="284" rx="16" fill="#fff" stroke="#e6dfea"/>
+          <!-- 刑椅 -->
+          <rect x="150" y="96" width="160" height="26" rx="8" fill="url(#g2)"/>
+          <rect x="150" y="96" width="24" height="170" rx="8" fill="#2a1020"/>
+          <rect x="286" y="96" width="24" height="170" rx="8" fill="#2a1020"/>
+          <rect x="150" y="246" width="160" height="20" rx="8" fill="#2a1020"/>
+          <rect x="176" y="122" width="108" height="124" rx="12" fill="#f4e7ef" stroke="#d9c2d2"/>
+          <!-- 脚部 -->
+          <ellipse cx="218" cy="268" rx="30" ry="14" fill="#f0c9b0"/>
+          <ellipse cx="252" cy="268" rx="30" ry="14" fill="#f0c9b0"/>
+          <!-- 挠痒机关臂 -->
+          <path d="M118 214 q46 -18 82 4" stroke="#b07a2a" stroke-width="5" fill="none" stroke-linecap="round"/>
+          <circle cx="118" cy="214" r="9" fill="#e0457b"/>
+          <path d="M342 214 q-42 -18 -78 4" stroke="#2a6f6a" stroke-width="5" fill="none" stroke-linecap="round"/>
+          <circle cx="342" cy="214" r="9" fill="#2a6f6a"/>
+          <path d="M104 214 l-16 -10 M104 214 l-16 4" stroke="#e0457b" stroke-width="2.4" stroke-linecap="round"/>
+          <path d="M356 214 l16 -10 M356 214 l16 4" stroke="#2a6f6a" stroke-width="2.4" stroke-linecap="round"/>
+          <!-- 节拍波 -->
+          <path d="M60 70 h28 l10 -24 l12 48 l12 -30 h26" stroke="#e0457b" stroke-width="3" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+          <path d="M330 312 h40 M330 300 h28" stroke="#b07a2a" stroke-width="3" stroke-linecap="round"/>
+          <circle cx="380" cy="80" r="5" fill="#e0457b"/>
+          <circle cx="400" cy="96" r="3" fill="#2a6f6a"/>
+          <circle cx="70" cy="300" r="4" fill="#b07a2a"/>
+        </svg>
+        <span class="badge b1"><b>灵敏度</b>LV.3 中等偏敏</span>
+        <span class="badge b2"><b>节拍</b>72 BPM 软毛段</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap">
+    <div class="layout">
+
+      <!-- 主内容 -->
+      <div class="primary" style="min-width:0">
+
+        <!-- 领域概览 -->
+        <section class="block" id="overview" style="padding-top:clamp(26px,3.4vw,40px)">
+          <div class="sec-head">
+            <h2>刑房概览：三类机关与四种灵敏度</h2>
+            <span class="sub">先弄清被固定的是什么，再谈能不能忍</span>
+          </div>
+          <div class="overview">
+            <div class="ov-card">
+              <h4>软毛挠痒臂</h4>
+              <p>前段主机关，鹅毛与兔毛混编，摆幅 12—18 厘米，节拍 68—84 BPM。脚心正下方与足弓两侧各一组，交替触发。</p>
+            </div>
+            <div class="ov-card">
+              <h4>气垫脉冲板</h4>
+              <p>中段机关，足底贴合硅胶气垫，以 0.6 秒间隔鼓压。压力三档，第二档起有轻微吸附感，是多数人提前喊停的位置。</p>
+            </div>
+            <div class="ov-card">
+              <h4>震动指刷阵</h4>
+              <p>后段机关，九根硅胶指刷按低频震动贴着脚趾缝滑动。持续 40 秒后自动退开，属于可预期的收尾段。</p>
+            </div>
+          </div>
+          <p style="font-size:14px;color:var(--muted);margin-top:14px">固定方式统一为脚踝软扣加膝部横杆，松紧在入场前由玩家本人确认；刑椅靠背角度可在 105°—140° 间调整，角度越大，脚心暴露面积越大。灵敏度等级 LV.1 到 LV.4 直接决定三组机关的触发间隔，LV.4 的平均间隔只有 6 秒。</p>
+        </section>
+
+        <!-- 精选内容推荐 -->
+        <section class="block" id="picks">
+          <div class="sec-head">
+            <h2>精选内容推荐</h2>
+            <span class="sub">编辑手选 · 11 月 7 日</span>
+            <a class="more" href="/#channel">全部分类 →</a>
+          </div>
+          <div class="grid-3">
+            <article class="card">
+              <div class="ph"><img src="https://picsum.photos/seed/tickle-feather-room/640/360" width="640" height="360" loading="lazy" alt="刑房内悬吊的软毛挠痒臂与节拍灯"></div>
+              <div class="body">
+                <div class="meta"><span class="pill">机关实测</span><span>11-05</span></div>
+                <h3><a href="/#analysis">软毛挠痒臂的 84 BPM 上限是怎么定的</a></h3>
+                <p>三名体验者在 LV.3 下坚持时长分别为 3 分 12 秒、2 分 47 秒、4 分 05 秒，差距主要来自呼吸节奏。</p>
+                <div class="foot"><span>阅读 1.8k</span><span>6 分钟</span></div>
+              </div>
+            </article>
+            <article class="card">
+              <div class="ph"><img src="https://picsum.photos/seed/foot-restraint-chair/640/360" width="640" height="360" loading="lazy" alt="带软扣的脚踝固定刑椅局部"></div>
+              <div class="body">
+                <div class="meta"><span class="pill">体验指南</span><span>11-03</span></div>
+                <h3><a href="/#guide">第一次进刑房，脚踝软扣调到多紧合适</a></h3>
+                <p>能塞进一根手指是通行标准；调太紧会让小腿发麻，反而放大脚心的敏感度。</p>
+                <div class="foot"><span>阅读 2.4k</span><span>4 分钟</span></div>
+              </div>
+            </article>
+            <article class="card">
+              <div class="ph"><img src="https://picsum.photos/seed/pulse-air-pad/640/360" width="640" height="360" loading="lazy" alt="贴合足底的气垫脉冲板特写"></div>
+              <div class="body">
+                <div class="meta"><span class="pill">难度对照</span><span>11-02</span></div>
+                <h3><a href="/#compare">气垫脉冲板第二档与第三档差在哪</a></h3>
+                <p>同为 0.6 秒间隔，第三档多了 1.4 秒的持续吸附，中断率从 31% 升到 58%。</p>
+                <div class="foot"><span>阅读 1.3k</span><span>5 分钟</span></div>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <!-- 最新更新 -->
+        <section class="block" id="latest">
+          <div class="sec-head">
+            <h2>最新更新：本周机关与规则变动</h2>
+            <span class="sub">记录以现场告示与运营方公布为准</span>
+          </div>
+          <ul class="tight">
+            <li>
+              <span class="d">11-06</span>
+              <span><a class="t" href="/#analysis">第 3 关羽毛悬吊阻力下调 15%</a><span class="s">软毛摆幅从 18 厘米收到 15.3 厘米，LV.3 平均坚持时长延长约 40 秒。</span></span>
+              <span class="k">机关调整</span>
+            </li>
+            <li>
+              <span class="d">11-04</span>
+              <span><a class="t" href="/#channel">新增 LV.2 舒适档，取消预约时必须选档</a><span class="s">到店后可在开场前 5 分钟内改档一次，改档不收费用。</span></span>
+              <span class="k">规则变更</span>
+            </li>
+            <li>
+              <span class="d">10-31</span>
+              <span><a class="t" href="/#faq">震动指刷阵单次时长由 55 秒缩到 40 秒</a><span class="s">运营方称收尾段过长导致次日投诉集中，属于体验节奏调整。</span></span>
+              <span class="k">机关调整</span>
+            </li>
+            <li>
+              <span class="d">10-28</span>
+              <span><a class="t" href="/#reviews">四位回访玩家的实测记录上线</a><span class="s">含两次中途喊停与一次完整通关，附各自使用的灵敏度档位。</span></span>
+              <span class="k">内容更新</span>
+            </li>
+            <li>
+              <span class="d">10-24</span>
+              <span><a class="t" href="/#trust">安全员巡检表改为每场结束后签字</a><span class="s">此前为每两小时巡检一次，变化写在入口处的纸质表格上。</span></span>
+              <span class="k">安全流程</span>
+            </li>
+          </ul>
+        </section>
+
+        <!-- 分类入口 -->
+        <section class="block" id="channel">
+          <div class="sec-head">
+            <h2>按机关与体验方式分类</h2>
+            <span class="sub">10 个频道 · 点标签进入对应内容</span>
+          </div>
+          <div class="tags-index">
+            <a href="/#picks">软毛挠痒臂 <span class="c">16</span></a>
+            <a href="/#picks">气垫脉冲板 <span class="c">12</span></a>
+            <a href="/#picks">震动指刷阵 <span class="c">9</span></a>
+            <a href="/#guide">脚踝软扣调节 <span class="c">11</span></a>
+            <a href="/#analysis">灵敏度分级 <span class="c">14</span></a>
+            <a href="/#compare">节拍与呼吸配合 <span class="c">8</span></a>
+            <a href="/#reviews">中途喊停流程 <span class="c">7</span></a>
+            <a href="/#trust">安全员巡检 <span class="c">5</span></a>
+            <a href="/#faq">双人同场规则 <span class="c">6</span></a>
+            <a href="/#reco">新手第一次入场 <span class="c">13</span></a>
+          </div>
+        </section>
+
+        <!-- 深度解析 -->
+        <section class="block" id="analysis">
+          <div class="sec-head">
+            <h2>深度解析：忍受时长不是意志力问题</h2>
+            <span class="sub">全页唯一长文 · 可与现场数据对照</span>
+          </div>
+          <div class="analysis">
+            <article class="art">
+              <h3>一、84 BPM 是拐点，不是难度旋钮</h3>
+              <p>软毛挠痒臂的节拍上限设在 84 BPM，运营方给的理由是「再快会盖过玩家自己的呼吸节奏」。这个说法有一半站得住脚。10 月 22 日到 11 月 5 日的 27 场记录里，节拍在 68—76 BPM 时，LV.3 玩家的平均坚持时长为 3 分 51 秒；提到 80 BPM 后掉到 2 分 26 秒，掉了近四成。但同一批数据里，LV.4 在 76 BPM 下的平均时长只有 1 分 58 秒——比 LV.3 在 80 BPM 下还短。<strong>决定时长的主要变量是灵敏度档位，节拍只是次级变量。</strong>所以「调慢节拍让新手好受」这个做法，对 LV.4 玩家几乎无效。</p>
+              <div class="callout"><b>可核对结构：</b>27 场记录按档位拆开，LV.1 平均 6 分 02 秒、LV.2 5 分 14 秒、LV.3 3 分 51 秒、LV.4 1 分 58 秒。档位每升一级，时长大约减少四分之一到三分之一，节拍的影响则集中在 76 BPM 这个分界前后。</div>
+
+              <h3>二、气垫第二档的「吸附感」被高估了</h3>
+              <p>不少攻略把气垫第二档描述成「最难熬的一关」，理由是 1.4 秒的持续吸附会让人产生窒息感。从 11 月 1 日现场记录看，第二档的中断率 31%，第三档 58%，第二档反而是四档里中断率第三高的位置，低于第三档和 LV.4 的软毛段。更关键的差异在中断方式：第二档喊停的人里，7 成是在吸附结束后的间隙里喊的；第三档则有 5 成在吸附过程中直接拍扶手。<strong>吸附本身的压迫感不如外界传的那么强，真正让人放弃的是两次吸附之间的等待。</strong>等待时长从 2.2 秒缩到 1.1 秒后，第三档的中断率才明显上去。</p>
+              <div class="quote">「第一次玩选的第三档，想着忍一忍就过去。结果不是被按着难受，是它停下来那一下，你不知道下一次什么时候来，脚趾自己就开始抖。」<cite>——玩家 W，10 月 29 日回访记录</cite></div>
+
+              <h3>三、喊停的人比想象中多，而且大多不后悔</h3>
+              <p>11 月 3 日运营方公布的 10 月统计显示，完整通关率 43%，中途喊停率 57%。这个比例在同类互动刑房里偏高，但和「体验差」没关系。回访的 4 位玩家中，2 位中途喊停，2 位走完全程；喊停的两位都表示愿意再来，其中一位明确指出是「气垫第二档到第三档的切换太快」。<strong>通关率低不等于设计失败，反而说明档位选择足够真实地反映了个体差异。</strong>争议在于：运营方把「完整通关」做成了一项可炫耀的数据，容易让新手误以为必须撑到底。到目前为止，这一说法只出现在宣传物料里，现场并未把通关结果与任何权益挂钩。</p>
+
+              <h3>四、脚踝软扣的松紧是被忽略的变量</h3>
+              <p>软扣调太紧，小腿血液循环受阻，脚心对触感的敏感度反而上升；调太松，脚掌会在气垫板上滑动，造成不均匀的受力点。10 月 26 日的三次对照里，同一名 LV.3 玩家在「能塞进一根手指」的松紧下坚持 4 分 05 秒，在「完全贴紧」下只坚持 2 分 31 秒。<strong>一根手指的余量，比换一个档位的影响还大。</strong>这一条在入口告示里没写，只在安全员口头提醒中出现。</p>
+
+              <h3>五、双人同场不会互相拖累，但会拉长等待</h3>
+              <p>10 月 30 日起开放双人同场，两人各占一台刑椅，机关同步触发。实测里，同步触发让双方的坚持时长都缩短了约 20%，原因是能听见对方的呼吸和笑声。不过整场时长从 38 分钟拉到 52 分钟，多出来的是换场与设备复位时间。若预约时段紧张，单人场还是更划算。</p>
+            </article>
+          </div>
+        </section>
+
+        <!-- 难度对照面板 -->
+        <section class="block" id="compare">
+          <div class="sec-head">
+            <h2>四档灵敏度对照</h2>
+            <span class="sub">同一机关在不同档位下的表现差异</span>
+          </div>
+          <div class="compare">
+            <div class="col">
+              <h4>LV.1—LV.2 · 适应档</h4>
+              <ul>
+                <li>软毛段节拍 68 BPM，摆幅 12 厘米</li>
+                <li>气垫只用第一档，间隔 2.2 秒</li>
+                <li>震动指刷阵缩短到 25 秒</li>
+                <li>首次入场默认档位，可随时要求暂停</li>
+                <li>10 月平均坚持时长 6 分 02 秒与 5 分 14 秒</li>
+              </ul>
+            </div>
+            <div class="col">
+              <h4>LV.3—LV.4 · 挑战档</h4>
+              <ul>
+                <li>软毛段节拍 76—84 BPM，摆幅 15.3 厘米</li>
+                <li>气垫启用第二、第三档，含 1.4 秒吸附</li>
+                <li>震动指刷阵 40 秒完整运行</li>
+                <li>需在预约时勾选，入场后仅可改档一次</li>
+                <li>10 月平均坚持时长 3 分 51 秒与 1 分 58 秒</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- 体验指南 -->
+        <section class="block" id="guide">
+          <div class="sec-head">
+            <h2>体验指南：从进场到离场的六步</h2>
+            <span class="sub">按现场流程顺序排列</span>
+          </div>
+          <div class="steps">
+            <div class="step">
+              <h4>入场前 5 分钟确认档位</h4>
+              <p>签到台会出示四档说明卡。第一次来建议先选 LV.2，开场前可免费改一次，改档机会用掉后不再恢复。</p>
+            </div>
+            <div class="step">
+              <h4>安全员演示软扣松紧</h4>
+              <p>脚踝软扣以能塞进一根手指为准。安全员会当场演示一次，玩家自行拉紧后再由对方复核，双方都要在巡检表上签字。</p>
+            </div>
+            <div class="step">
+              <h4>刑椅角度自选</h4>
+              <p>靠背 105° 到 140°，角度每加 10°，脚心暴露面积约增加 8%。怕受不了就从 105° 开始，中途可要求调整一次。</p>
+            </div>
+            <div class="step">
+              <h4>前段软毛段 90 秒适应</h4>
+              <p>这一段的目的是让身体习惯触感节奏。多数人在这 90 秒里会笑出声，不必刻意憋住，笑声反而有助于呼吸节奏稳定。</p>
+            </div>
+            <div class="step">
+              <h4>中段气垫段的呼吸法</h4>
+              <p>吸附开始时用鼻吸气 3 秒、口呼气 4 秒，把注意力放在呼气上。现场数据显示，采用这种节奏的玩家中断率下降约 12%。</p>
+            </div>
+            <div class="step">
+              <h4>喊停与离场</h4>
+              <p>拍击右侧扶手两次即为安全词，机关 3 秒内全停。离场后可领一份个人记录卡，包含坚持时长、中断位置与建议档位。</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- 榜单 / 可信度分层 -->
+        <section class="block" id="trust">
+          <div class="sec-head">
+            <h2>关卡难度榜单与证据分层</h2>
+            <span class="sub">分数按 10 月 27 场记录折算</span>
+          </div>
+          <div class="rank">
+            <div class="rank-item">
+              <div><h4>第 7 关 · 气垫第三档吸附</h4><p>中断率 58%，10 月共 27 场中 16 场在此终止</p></div>
+              <span class="score">9.2<small>难度分</small></span>
+            </div>
+            <div class="rank-item">
+              <div><h4>第 5 关 · 双足交错软毛</h4><p>左右脚交替触发，摆幅 18 厘米，LV.4 下平均坚持 1 分 26 秒</p></div>
+              <span class="score">8.7<small>难度分</small></span>
+            </div>
+            <div class="rank-item">
+              <div><h4>第 9 关 · 趾缝震动指刷</h4><p>持续 40 秒，收尾段，中断率 22%，多数人能完成</p></div>
+              <span class="score">7.1<small>难度分</small></span>
+            </div>
+            <div class="rank-item">
+              <div><h4>第 3 关 · 羽毛悬吊</h4><p>11 月 6 日阻力下调后难度分从 8.0 落到 6.4</p></div>
+              <span class="score">6.4<small>难度分</small></span>
+            </div>
+          </div>
+          <div class="callout" style="margin-top:16px"><b>证据分层：</b>10 月 22 日之后的机关参数来自现场告示与运营方公告，标为 A 类；3 分 51 秒等平均时长来自回访记录整理，标为 B 类；「吸附感接近窒息」这类描述来自玩家转述，标为 C 类，未做生理测量。</div>
+        </section>
+
+        <!-- 用户评论 -->
+        <section class="block" id="reviews">
+          <div class="sec-head">
+            <h2>玩家评论：四份回访记录</h2>
+            <span class="sub">含中途喊停与完整通关两种结果</span>
+          </div>
+          <div class="reviews">
+            <div class="review">
+              <div class="u"><span class="av" style="background:#8a1f4c">W</span><span class="un">W 先生</span><span class="stars">★★★★☆</span><span class="when">10-29</span></div>
+              <p>选的 LV.3，气垫第二档到第三档切换太快，脚趾自己开始抖。安全员说这种反应很常见。机关是做的真细，那个 1.4 秒吸附确实不好受。</p>
+              <span class="ref">指向：第 7 关 · 气垫第三档</span>
+            </div>
+            <div class="review">
+              <div class="u"><span class="av" style="background:#2a6f6a">L</span><span class="un">L 小姐</span><span class="stars">★★★☆☆</span><span class="when">11-01</span></div>
+              <p>双人场等得太久了，换场和复位花了将近 15 分钟，两个人一起反而没那么有意思。机关本身没问题。</p>
+              <span class="ref">指向：双人同场流程</span>
+            </div>
+            <div class="review">
+              <div class="u"><span class="av" style="background:#b07a2a">Z</span><span class="un">Z 同学</span><span class="stars">★★★★★</span><span class="when">11-03</span></div>
+              <p>第一次来选 LV.1，脚踝软扣按安全员说的留了一根手指，全程基本能笑出来。第三章羽毛那段改过之后明显舒服，推荐新手先从这个档位试。</p>
+              <span class="ref">指向：第 3 关 · 羽毛悬吊</span>
+            </div>
+            <div class="review">
+              <div class="u"><span class="av" style="background:#6b6377">H</span><span class="un">H 女士</span><span class="stars">★★★☆☆</span><span class="when">11-04</span></div>
+              <p>震动指刷阵从 55 秒缩到 40 秒，感官上差别不大，反正我没撑到最后。倒是觉得入口告示没写软扣松紧的事，全靠安全员口头说。</p>
+              <span class="ref">指向：第 9 关 · 趾缝震动指刷</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- 相关资讯 -->
+        <section class="block" id="news">
+          <div class="sec-head">
+            <h2>相关资讯</h2>
+            <span class="sub">11 月上旬行业与场馆动态</span>
+          </div>
+          <div class="news">
+            <div class="news-item">
+              <div class="src"><b>运营方公告</b><span>11-06</span></div>
+              <h4>羽毛悬吊阻力下调 15%</h4>
+              <p>软毛摆幅从 18 厘米收到 15.3 厘米，官方称是「根据三个月回访数据做的舒适性调整」。</p>
+            </div>
+            <div class="news-item">
+              <div class="src"><b>现场告示</b><span>11-04</span></div>
+              <h4>预约取消必选档位</h4>
+              <p>到店后可在开场前 5 分钟内免费改档一次，超过时间不可更改，也不退费。</p>
+            </div>
+            <div class="news-item">
+              <div class="src"><b>行业观察</b><span>11-02</span></div>
+              <h4>互动刑房进入「参数透明」阶段</h4>
+              <p>三家同类场馆开始在入口处公示节拍、摆幅与中断率，以回应玩家对信息不对称的反馈。</p>
+            </div>
+            <div class="news-item">
+              <div class="src"><b>安全流程</b><span>10-24</span></div>
+              <h4>巡检表改为每场签字</h4>
+              <p>此前为每两小时巡检一次，现在每场结束后由安全员与玩家各签一次，纸质表挂在入口右侧。</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- 相关推荐 -->
+        <section class="block" id="reco" style="border-bottom:0">
+          <div class="sec-head">
+            <h2>相关推荐</h2>
+            <span class="sub">按你可能在搜的词组织</span>
+          </div>
+          <div class="reco">
+            <a href="/#analysis">恶魔刑房灵敏度分级怎么看</a>
+            <a href="/#guide">脚踝软扣一根手指调法</a>
+            <a href="/#compare">气垫脉冲板三档区别</a>
+            <a href="/#latest">羽毛悬吊阻力调整记录</a>
+            <a href="/#faq">中途喊停安全词是什么</a>
+            <a href="/#trust">互动刑房证据分层说明</a>
+            <a href="/#reviews">双人同场实测感受</a>
+            <a href="/#guide">第一次进刑房选哪档</a>
+          </div>
+        </section>
+
+        <!-- 时间线 补充板块 -->
+        <section class="block" id="timeline" style="padding-top:30px">
+          <div class="sec-head">
+            <h2>近三周机制变动时间线</h2>
+          </div>
+          <ol class="timeline">
+            <li><span class="t">10-24</span><b>巡检表改为每场签字</b>安全员与玩家各签一次，此前为两小时一巡。</li>
+            <li><span class="t">10-28</span><b>四位回访玩家实测记录上线</b>两次中途喊停、一次完整通关、一次双人场。</li>
+            <li><span class="t">10-31</span><b>震动指刷阵单次时长 55 秒缩短到 40 秒</b>官方理由是次日投诉集中。</li>
+            <li><span class="t">11-01</span><b>气垫第二档中断率统计公布</b>31% 的中断发生在吸附结束后的间隙。</li>
+            <li><span class="t">11-04</span><b>新增 LV.2 舒适档</b>预约不再强制选档，入场前 5 分钟可免费改一次。</li>
+            <li><span class="t">11-06</span><b>第 3 关羽毛悬吊阻力下调 15%</b>摆幅由 18 厘米改为 15.3 厘米。</li>
+          </ol>
+        </section>
+
+        <!-- FAQ -->
+        <section class="block" id="faq" style="border-bottom:0">
+          <div class="sec-head">
+            <h2>常见问题</h2>
+            <span class="sub">按提问频率排序</span>
+          </div>
+          <div class="faq">
+            <details class="q" open>
+              <summary>恶魔刑房tk挠脚心会真的碰到脚吗</summary>
+              <div class="a">会，但只通过三类中介接触：软毛、硅胶气垫与硅胶指刷。软毛段是悬吊臂摆动，气垫段贴合足底鼓压，指刷段贴着趾缝滑动。全程没有裸手直接接触脚心，安全员只在调节软扣和调整刑椅角度时接触脚踝与膝部。</div>
+            </details>
+            <details class="q">
+              <summary>灵敏度四档具体差别在哪</summary>
+              <div class="a">差异集中在三个参数：软毛段节拍（68—84 BPM）、气垫启用档位（第一档到第三档）、震动指刷阵时长（25 秒或 40 秒）。LV.1 到 LV.4 逐级提高，10 月平均坚持时长对应 6 分 02 秒、5 分 14 秒、3 分 51 秒、1 分 58 秒。首次入场默认 LV.2，可在开场前 5 分钟内改一次。</div>
+            </details>
+            <details class="q">
+              <summary>气垫脉冲板第三档的吸附为什么难熬</summary>
+              <div class="a">1.4 秒的持续吸附本身不是主因，难熬的是吸附结束后 1.1 秒的等待。10 月记录里第三档中断率 58%，其中一半发生在这个间隙。把等待拉长到 2.2 秒的第二档，中断率降到 31%。这说明不可预期性比压力本身更影响坚持时长。</div>
+            </details>
+            <details class="q">
+              <summary>脚踝软扣调到什么程度合适</summary>
+              <div class="a">能塞进一根手指。完全贴紧会让小腿血液循环变差，脚心敏感度上升；调得过松，脚掌在气垫板上滑动，受力点不均匀。10 月 26 日三次对照中，同一名 LV.3 玩家在留一指余量时坚持 4 分 05 秒，完全贴紧时只有 2 分 31 秒。</div>
+            </details>
+            <details class="q">
+              <summary>中途受不了怎么喊停</summary>
+              <div class="a">拍击右侧扶手两次即为安全词，机关 3 秒内全停，安全员会同时检查脚踝软扣与刑椅角度。10 月整体中断率 57%，其中 7 成发生在气垫段。离场记录卡会写明中断位置与建议档位，下次预约可直接沿用。</div>
+            </details>
+            <details class="q">
+              <summary>双人同场值不值得选</summary>
+              <div class="a">看重互动可以选，看重效率不必选。双人同时触发机关会让双方坚持时长各缩短约 20%，但整场时长从 38 分钟拉到 52 分钟，多出来的时间用于换场与设备复位。11 月 1 日的回访里有人明确提到等待时间偏长。</div>
+            </details>
+            <details class="q">
+              <summary>新手第一次去应该选哪个档</summary>
+              <div class="a">LV.2 起步，刑椅角度选 105°。前 90 秒软毛段主要用来适应节奏，笑出声不用憋。若在气压段改用鼻吸 3 秒、口呼 4 秒的节奏，现场数据显示中断率可下降约 12%。记得确认脚踝软扣留一指余量。</div>
+            </details>
+          </div>
+        </section>
+
+      </div>
+
+      <!-- 侧栏 -->
+      <aside class="side" aria-label="侧栏导航与快捷入口">
+        <div class="side-card">
+          <h4>栏目导航</h4>
+          <nav class="side-nav" id="sideNav" aria-label="侧栏栏目">
+            <a href="/#overview">刑房概览 <span class="n">01</span></a>
+            <a href="/#picks">精选推荐 <span class="n">02</span></a>
+            <a href="/#latest">本周更新 <span class="n">03</span></a>
+            <a href="/#channel">分类入口 <span class="n">04</span></a>
+            <a href="/#analysis">机制解析 <span class="n">05</span></a>
+            <a href="/#compare">档位对照 <span class="n">06</span></a>
+            <a href="/#guide">体验指南 <span class="n">07</span></a>
+            <a href="/#trust">难度榜单 <span class="n">08</span></a>
+            <a href="/#reviews">玩家评论 <span class="n">09</span></a>
+            <a href="/#faq">常见问题 <span class="n">10</span></a>
+          </nav>
+        </div>
+        <div class="side-card">
+          <h4>本周热读</h4>
+          <ul class="side-list">
+            <li><span class="tag">实测</span><a href="/#analysis">84 BPM 上限怎么定</a></li>
+            <li><span class="tag">指南</span><a href="/#guide">脚踝软扣松紧调法</a></li>
+            <li><span class="tag">对照</span><a href="/#compare">气垫二档与三档</a></li>
+            <li><span class="tag">流程</span><a href="/#faq">安全词与喊停</a></li>
+            <li><span class="tag">榜单</span><a href="/#trust">第 7 关难度 9.2</a></li>
+          </ul>
+        </div>
+        <div class="side-card side-cta">
+          <h4>预约前先看档位</h4>
+          <p>11 月 4 日起入场前 5 分钟内可免费改档一次，逾期不再更改。</p>
+          <a href="/#guide">查看体验流程</a>
+        </div>
+      </aside>
+
+    </div>
+  </div>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <div class="fbrand">
+      <div class="bt">
+        <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="10" fill="#e0457b"/><path d="M20 7l2.9 7.1L30 17l-7.1 2.9L20 27l-2.9-7.1L10 17l7.1-2.9z" fill="#fff"/></svg>
+        恶魔刑房tk挠脚心
+      </div>
+      <p>一个记录实景互动刑房机关参数、档位差异与回访数据的独立栏目，所有数值以现场告示与运营方公告为准，转述内容单独标注。</p>
+    </div>
+    <div class="fgrid">
+      <div>
+        <h5>机关频道</h5>
+        <ul>
+          <li><a href="/#picks">软毛挠痒臂</a></li>
+          <li><a href="/#picks">气垫脉冲板</a></li>
+          <li><a href="/#picks">震动指刷阵</a></li>
+          <li><a href="/#channel">全部 10 个分类</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>体验与规则</h5>
+        <ul>
+          <li><a href="/#guide">六步上场流程</a></li>
+          <li><a href="/#compare">四档灵敏度对照</a></li>
+          <li><a href="/#faq">喊停与安全词</a></li>
+          <li><a href="/#trust">证据分层说明</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>记录与更新</h5>
+        <ul>
+          <li><a href="/#latest">本周机关变动</a></li>
+          <li><a href="/#timeline">机制时间线</a></li>
+          <li><a href="/#reviews">回访玩家评论</a></li>
+          <li><a href="/#news">相关资讯</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="fnote">
+      <span>页面数据为示例条目与公开记录整理，档位参数以现场告示为准。</span>
+      <span>最后更新：2026-11-08（对应正文 11-06 羽毛悬吊阻力调整与 11-04 改档规则）</span>
+      <span class="sp">© 2026 恶魔刑房观察记录</span>
+    </div>
+  </div>
+</footer>
+
+<button class="totop" id="toTop" aria-label="回到顶部">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+</button>
+
+<script>
+(function(){
+  // 搜索（本地索引）
+  var index = [
+    {t:"软毛挠痒臂 84 BPM 上限",u:"/#analysis",d:"机关实测"},
+    {t:"脚踝软扣调多紧合适",u:"/#guide",d:"体验指南"},
+    {t:"气垫脉冲板第二档与第三档",u:"/#compare",d:"难度对照"},
+    {t:"四档灵敏度对照表",u:"/#compare",d:"对照面板"},
+    {t:"震动指刷阵时长调整",u:"/#latest",d:"最新更新"},
+    {t:"第 7 关气垫第三档吸附",u:"/#trust",d:"难度榜单"},
+    {t:"中途喊停安全词",u:"/#faq",d:"常见问题"},
+    {t:"双人同场规则",u:"/#reviews",d:"玩家评论"},
+    {t:"羽毛悬吊阻力下调",u:"/#timeline",d:"时间线"},
+    {t:"刑房概览三类机关",u:"/#overview",d:"领域概览"},
+    {t:"新手第一次选哪档",u:"/#faq",d:"常见问题"},
+    {t:"证据分层 A 类 B 类",u:"/#trust",d:"可信度分层"}
+  ];
+  var q = document.getElementById('q');
+  var btn = document.getElementById('searchBtn');
+  var out = document.getElementById('searchResult');
+
+  function run(){
+    var v = (q.value||'').trim();
+    if(!v){ out.classList.remove('on'); out.innerHTML=''; return; }
+    var hits = index.filter(function(x){
+      return (x.t + ' ' + x.d).toLowerCase().indexOf(v.toLowerCase()) > -1;
+    });
+    if(!hits.length){
+      out.innerHTML = '<div class="tip">搜索：'+ v.replace(/[<>]/g,'') +'</div><div class="empty">没有找到匹配的关卡、机关或术语，换个词试试，例如「气垫」「软扣」「喊停」。</div>';
+    }else{
+      out.innerHTML = '<div class="tip">找到 '+hits.length+' 条相关</div>' + hits.map(function(x){
+        return '<a href="'+x.u+'"><span style="font-size:11px;color:#8a1f4c;margin-right:6px">['+x.d+']</span>'+x.t+'</a>';
+      }).join('');
+    }
+    out.classList.add('on');
+  }
+  btn.addEventListener('click', run);
+  q.addEventListener('input', run);
+  q.addEventListener('keydown', function(e){ if(e.key==='Enter'){ e.preventDefault(); run(); } });
+  document.addEventListener('click', function(e){
+    if(!out.contains(e.target) && e.target!==q && e.target!==btn){ out.classList.remove('on'); }
+  });
+
+  // 移动端菜单
+  var menuBtn = document.getElementById('menuBtn');
+  var nav = document.getElementById('mainNav');
+  menuBtn.addEventListener('click', function(){
+    var open = nav.classList.toggle('open');
+    menuBtn.setAttribute('aria-expanded', open ? 'true':'false');
+    menuBtn.setAttribute('aria-label', open ? '收起菜单':'展开菜单');
+  });
+  nav.addEventListener('click', function(e){
+    if(e.target.tagName === 'A' && window.matchMedia('(max-width:720px)').matches){
+      nav.classList.remove('open');
+      menuBtn.setAttribute('aria-expanded','false');
+      menuBtn.setAttribute('aria-label','展开菜单');
+    }
+  });
+
+  // 侧栏滚动高亮
+  var links = Array.prototype.slice.call(document.querySelectorAll('#sideNav a'));
+  var targets = links.map(function(a){
+    var id = a.getAttribute('href').replace('/#','');
+    return document.getElementById(id);
+  });
+  function onScroll(){
+    var pos = window.scrollY + 140;
+    var active = -1;
+    targets.forEach(function(el, i){
+      if(el && el.offsetTop <= pos) active = i;
+    });
+    links.forEach(function(a,i){ a.classList.toggle('active', i===active); });
+
+    var top = document.getElementById('toTop');
+    if(window.scrollY > 420){ top.classList.add('on'); } else { top.classList.remove('on'); }
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  document.getElementById('toTop').addEventListener('click', function(){
+    window.scrollTo({top:0, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto':'smooth'});
+  });
+})();
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"WebSite",
+  "name":"恶魔刑房tk挠脚心",
+  "description":"记录实景互动刑房机关参数、灵敏度档位、回访数据与体验流程的独立栏目。",
+  "inLanguage":"zh-CN"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {"@type":"Question","name":"恶魔刑房tk挠脚心会真的碰到脚吗","acceptedAnswer":{"@type":"Answer","text":"会，但只通过软毛、硅胶气垫与硅胶指刷三类中介接触。全程没有裸手直接接触脚心，安全员只在调节软扣和调整刑椅角度时接触脚踝与膝部。"}},
+    {"@type":"Question","name":"灵敏度四档具体差别在哪","acceptedAnswer":{"@type":"Answer","text":"差异集中在软毛段节拍、气垫启用档位与震动指刷阵时长。10 月平均坚持时长对应 6 分 02 秒、5 分 14 秒、3 分 51 秒、1 分 58 秒。首次入场默认 LV.2，可在开场前 5 分钟内改一次。"}},
+    {"@type":"Question","name":"气垫脉冲板第三档的吸附为什么难熬","acceptedAnswer":{"@type":"Answer","text":"1.4 秒持续吸附本身不是主因，难熬的是吸附结束后 1.1 秒的等待。第三档中断率 58%，其中一半发生在这个间隙。第二档等待拉长到 2.2 秒，中断率降到 31%。"}},
+    {"@type":"Question","name":"脚踝软扣调到什么程度合适","acceptedAnswer":{"@type":"Answer","text":"能塞进一根手指。完全贴紧会让小腿血液循环变差，脚心敏感度上升；调得过松则脚掌在气垫板上滑动。10 月 26 日对照中，留一指余量时坚持 4 分 05 秒，完全贴紧时只有 2 分 31 秒。"}},
+    {"@type":"Question","name":"中途受不了怎么喊停","acceptedAnswer":{"@type":"Answer","text":"拍击右侧扶手两次即为安全词，机关 3 秒内全停，安全员同时检查脚踝软扣与刑椅角度。10 月整体中断率 57%，其中 7 成发生在气垫段。"}},
+    {"@type":"Question","name":"双人同场值不值得选","acceptedAnswer":{"@type":"Answer","text":"看重互动可以选，看重效率不必选。双人同时触发会让双方坚持时长各缩短约 20%，整场时长从 38 分钟拉到 52 分钟，多出的时间用于换场与设备复位。"}},
+    {"@type":"Question","name":"新手第一次去应该选哪个档","acceptedAnswer":{"@type":"Answer","text":"LV.2 起步，刑椅角度选 105°。前 90 秒软毛段用来适应节奏。气垫段改用鼻吸 3 秒、口呼 4 秒的节奏，现场数据显示中断率可下降约 12%。"}}
+  ]
+}
+</script>
+
+</body>
+              </html>
